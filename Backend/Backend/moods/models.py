@@ -1,3 +1,16 @@
 from django.db import models
 
-# Create your models here.
+
+class Mood(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.moods_name
+
+
+class SubMoods(models.Model):
+    submood_name = models.CharField(max_length=100)
+    mood = models.ForeignKey(Mood, on_delete=models.CASCADE, related_name='submoods')
+
+    def __str__(self):
+        return self.submood_name
