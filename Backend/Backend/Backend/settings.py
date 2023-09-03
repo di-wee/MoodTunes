@@ -27,6 +27,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+
+SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
+SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
+
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
 
@@ -53,6 +57,7 @@ INSTALLED_APPS = [
     'users',
     'moods',
     'songs',
+    'spotipy',
 
 ]
 
