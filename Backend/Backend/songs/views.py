@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,7 +16,7 @@ class SpotifySongSearch(APIView):
             return Response({'error': 'Track name not provided or does not exists.'}, status=status.HTTP_404_NOT_FOUND)
 
         # initialize spotipy with authentication manager
-        sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
+        sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=settings.SPOTIPY_CLIENT_ID, client_secret=settings.SPOTIPY_CLIENT_SECRET))
 
         # spotify api call, searches song and fetches top 10 results.
         # to search for track to get ID that will allow me to access track audio features

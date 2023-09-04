@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.spotify',
     'dj_rest_auth',
     'rest_framework.authtoken',
+    'rest_framework',
     'corsheaders',
     'django_extensions',
     'users',
