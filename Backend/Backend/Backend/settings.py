@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'moods',
     'songs',
     'spotipy',
+    'playlists',
 
 ]
 
