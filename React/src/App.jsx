@@ -1,11 +1,9 @@
 import React from 'react';
-import NavBar from './components/NavBar';
 import { Route, Routes } from 'react-router-dom';
-import Main from './pages/Main';
-import Login from './components/Login';
 import UserDashboard from './pages/UserDashboard';
 import UserPlaylist from './pages/UserPlaylist';
 import AdminDashboard from './pages/AdminDashboard';
+import Main from './pages/Main';
 
 function App() {
 	return (
