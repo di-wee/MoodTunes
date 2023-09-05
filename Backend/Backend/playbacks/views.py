@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,11 +13,20 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 
 class Play(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
-        track_uri = request.data.get('track_uri', None)
+        uri = request.data.get('uri', None)  # getting uri from req.body
+        uri_type = request.data.get('uri_type', 'track')  # if no uri_type specified, default will be 'track'
+
         try:
-            if track_uri:
-                sp.start_playback(uris=[track_uri])  # playback via song in req body
+            if uri:
+                if uri_type == 'track':
+                    sp.start_playback(uris=[uri])  # playback via uri stated in req.body
+                elif uri_type == 'playlist':
+                    sp.start_playback(context_uri=uri)
+                else:
+                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
             else:
                 sp.start_playback()
             return Response({'msg': 'Playback started!'}, status=status.HTTP_200_OK)
@@ -26,34 +36,57 @@ class Play(APIView):
 
 class Pause(APIView):
     def post(self, request):
-        track_uri = request.data.get('track_uri', None)
+        uri = request.data.get('uri', None)
+        uri_type = request.data.get('uri_type', 'track')
         try:
-            if track_uri:
-                sp.pause_playback(track_uri)
+            if uri:
+                if uri_type == 'track':
+                    sp.pause_playback(uris=[uri])
+                elif uri_type == 'playlist':
+                    sp.pause_playback(context_uri=uri)
+                else:
+                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
             else:
                 sp.pause_playback()
-            return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
+                return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Next(APIView):
     def post(self, request):
-        track_uri = request.data.get('track_uri', None)
+        uri = request.data.get('uri', None)
+        uri_type = request.data.get('uri_type', 'tracks')
+
         try:
-            if track_uri:
-                sp.next_track(track_uri)
+            if uri:
+                if uri_type == 'track':
+                    sp.next_track(uris=[uri])
+                elif uri_type == 'playlist':
+                    sp.next_track(context_uri=uri)
+                else:
+                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
             else:
                 sp.next_track()
-            return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
+                return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Previous(APIView):
     def post(self, request):
+        uri = request.data.get('uri', None)
+        uri_type = request.data.get('uri_type', 'track')
+
         try:
-            sp.previous_track()
-            return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
+            if uri:
+                if uri_type == 'track':
+                    sp.previous_track(uris=[uri])
+                elif uri_type == 'playlist':
+                    sp.previous_track(context_uri=uri)
+                else:
+                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
