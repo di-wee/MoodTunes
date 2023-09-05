@@ -6,6 +6,14 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from songs.models import Songs
 from django.core.exceptions import ObjectDoesNotExist
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+from django.conf import settings
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id=settings.SPOTIPY_CLIENT_ID,
+    client_secret=settings.SPOTIPY_CLIENT_SECRET,
+    redirect_uri=settings.SPOTIPY_REDIRECT_URI))
 
 
 class CreatePlaylist(APIView):
@@ -16,6 +24,10 @@ class CreatePlaylist(APIView):
 
         if serializer.is_valid():
             serializer.save()
+            spotify_playlist = sp.user_playlist_create(request.user.username, serializer.data['name']) # passing Spotify username and the name of the playlist to get info of playlist
+            playlist = Playlist.objects.get(pk=serializer.data['id'])  # getting my og playlist not spotify
+            playlist.spotify_uri = spotify_playlist['uri']  # updating spotify_uri field for playlist with data retrieved
+            playlist.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Error creating playlist'}, status=status.HTTP_400_BAD_REQUEST)
@@ -62,6 +74,9 @@ class AddSongToPlaylist(APIView):
             playlist = Playlist.objects.get(pk=playlist_id)
             song = Songs.objects.get(pk=song_id)
             playlist.song.add(song)
+
+            sp.playlist_add_items(playlist.spotify_uri, [song.uri])  # add songs into user's spotify account
+
             return Response({'msg': 'Song added to playlist'}, status=status.HTTP_200_OK)
 
         except ObjectDoesNotExist:

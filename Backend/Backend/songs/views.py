@@ -70,7 +70,7 @@ class SpotifySongSearch(APIView):
                     'name': track['name'],
                     'artist': track['artists'][0]['name'],
                     'mood': song_to_mood,
-                    'uri': track['uri'],
+                    'uri': track['uri'],  # for playback
                 }
             )
 

@@ -13,8 +13,12 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 class Play(APIView):
     def post(self, request):
+        track_uri = request.data.get('track_uri', None)
         try:
-            sp.start_playback()
+            if track_uri:
+                sp.start_playback(uris=[track_uri])  # playback via song in req body
+            else:
+                sp.start_playback()
             return Response({'msg': 'Playback started!'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -22,8 +26,12 @@ class Play(APIView):
 
 class Pause(APIView):
     def post(self, request):
+        track_uri = request.data.get('track_uri', None)
         try:
-            sp.pause_playback()
+            if track_uri:
+                sp.pause_playback(track_uri)
+            else:
+                sp.pause_playback()
             return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -31,8 +39,12 @@ class Pause(APIView):
 
 class Next(APIView):
     def post(self, request):
+        track_uri = request.data.get('track_uri', None)
         try:
-            sp.next_track()
+            if track_uri:
+                sp.next_track(track_uri)
+            else:
+                sp.next_track()
             return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -45,6 +57,3 @@ class Previous(APIView):
             return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
