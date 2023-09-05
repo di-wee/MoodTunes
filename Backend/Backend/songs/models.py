@@ -8,3 +8,4 @@ class Songs(models.Model):
     submoods = models.ForeignKey(SubMoods, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255)

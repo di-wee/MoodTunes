@@ -70,6 +70,7 @@ class SpotifySongSearch(APIView):
                     'name': track['name'],
                     'artist': track['artists'][0]['name'],
                     'mood': song_to_mood,
+                    'uri': track['uri'],
                 }
             )
 
@@ -80,6 +81,7 @@ class SpotifySongSearch(APIView):
                 'valence': audio_features['valence'],
                 'energy': audio_features['energy'],
                 'danceability': audio_features['danceability'],
+                'uri': track['uri'],
             }
             tracks.append(song_data)
 
