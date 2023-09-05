@@ -7,15 +7,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 
 
-class GetRoles(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request):
-        if request.user.groups.filter(name='Admins').exists():
-            return Response({'role': 'admin'})
-        else:
-            return Response({'role': 'user'})
-
 
 class RefreshSpotifyToken(APIView):
     def post(self, request):

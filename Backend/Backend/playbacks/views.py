@@ -6,11 +6,6 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id=settings.SPOTIPY_CLIENT_ID,
-    client_secret=settings.SPOTIPY_CLIENT_SECRET,
-    redirect_uri=settings.SPOTIPY_REDIRECT_URI))
-
 
 class Play(APIView):
     permission_classes = (IsAuthenticated,)
@@ -19,6 +14,11 @@ class Play(APIView):
         uri = request.data.get('uri', None)  # getting uri from req.body
         uri_type = request.data.get('uri_type', 'track')  # if no uri_type specified, default will be 'track'
 
+        # not declared globally in case multiple users use app at the same time
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI))
         try:
             if uri:
                 if uri_type == 'track':
@@ -35,58 +35,49 @@ class Play(APIView):
 
 
 class Pause(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
         uri = request.data.get('uri', None)
         uri_type = request.data.get('uri_type', 'track')
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI))
         try:
-            if uri:
-                if uri_type == 'track':
-                    sp.pause_playback(uris=[uri])
-                elif uri_type == 'playlist':
-                    sp.pause_playback(context_uri=uri)
-                else:
-                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
-            else:
-                sp.pause_playback()
-                return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
+            sp.pause_playback()
+            return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Next(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
         uri = request.data.get('uri', None)
         uri_type = request.data.get('uri_type', 'tracks')
-
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI))
         try:
-            if uri:
-                if uri_type == 'track':
-                    sp.next_track(uris=[uri])
-                elif uri_type == 'playlist':
-                    sp.next_track(context_uri=uri)
-                else:
-                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
-            else:
-                sp.next_track()
-                return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
+            sp.next_track()
+            return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Previous(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
         uri = request.data.get('uri', None)
         uri_type = request.data.get('uri_type', 'track')
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI))
 
         try:
-            if uri:
-                if uri_type == 'track':
-                    sp.previous_track(uris=[uri])
-                elif uri_type == 'playlist':
-                    sp.previous_track(context_uri=uri)
-                else:
-                    return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
-            else:
-                return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
+            sp.previous_track()
+            return Response({'msg': 'Previous track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

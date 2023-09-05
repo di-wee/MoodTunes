@@ -1,5 +1,6 @@
 from django.conf import settings
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import spotipy
@@ -25,6 +26,7 @@ def determine_mood(valence, energy, danceability):
 
 
 class SpotifySongSearch(APIView):
+    permission_classes = [IsAdminUser]
     def get(self, request):
         # fetching query 'track' param
         track = request.query_params.get('track', None)

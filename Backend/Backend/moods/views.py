@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from .serializers import MoodSerializer, SubMoodSerializer
 from .models import Mood, SubMoods
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 
 
 class GetMoods(APIView):
@@ -13,6 +14,8 @@ class GetMoods(APIView):
 
 
 class CreateMoods(APIView):
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
 
         # de-serializing JSON into data for python
@@ -23,9 +26,6 @@ class CreateMoods(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Unable to create mood.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 class GetSubMoods(APIView):
@@ -41,6 +41,8 @@ class GetSubMoods(APIView):
 
 
 class CreateSubMoods(APIView):
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         serializer = SubMoodSerializer(data=request.data)
 
@@ -51,4 +53,19 @@ class CreateSubMoods(APIView):
             return Response({'error': 'Unable to create sub-mood.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class MoodMetrics(APIView):
+    permission_classes = [IsAdminUser]
 
+    def get(self, request):
+        try:
+            moods = Mood.objects.all().order_by('-count')
+            submoods = SubMoods.objects.all().order_by('-count')
+
+            mood_data = [{'name': mood.name, 'count': mood.count} for mood in moods]
+            submood_data = [{'name': submood.name, 'count': submood.count} for submood in submoods]
+            return Response({
+                "moods": mood_data,
+                "submoods": submood_data,
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
