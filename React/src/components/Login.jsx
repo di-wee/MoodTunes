@@ -4,7 +4,13 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { Spotify } from 'mdi-material-ui';
 import { LoginOutlined } from '@mui/icons-material';
+
 const Login = () => {
+	const LoginWithSpotify = () => {
+		window.location.href =
+			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
+	};
+
 	return (
 		<div
 			style={{
@@ -19,12 +25,11 @@ const Login = () => {
 					sx={{
 						bgcolor: blue[100],
 						height: '11vh',
-						width: '30%',
-						borderRadius: '15%',
-						opacity: '75%',
+						width: '40%',
+						borderRadius: '8%',
+						opacity: '85%',
 						position: 'relative',
-						top: '10.5rem',
-						left: '35%',
+						left: '30%',
 						zIndex: 1,
 						display: 'flex',
 						justifyContent: 'center',
@@ -51,10 +56,11 @@ const Login = () => {
 					}}>
 					<Typography
 						variant='h5'
-						sx={{ color: blue[50], marginBottom: '3rem' }}>
-						Welcome Back
+						sx={{ color: blue[50], marginBottom: '2rem' }}>
+						Welcome Back!
 					</Typography>
 					<Button
+						onClick={LoginWithSpotify}
 						endIcon={<Spotify></Spotify>}
 						variant='contained'
 						sx={{
@@ -66,6 +72,7 @@ const Login = () => {
 						Log in with Spotify
 					</Button>
 					<Button
+						href='https://www.spotify.com/sg-en/signup?flow_id=fba86dcd-96d7-4e4c-a61a-11087c9e62dc%3A1693990596&forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fscope%3Duser-read-playback-state%2Bstreaming%2Buser-modify-playback-state%26response_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8000%252Faccounts%252Fspotify%252Flogin%252Fcallback%252F%26state%3DuZgSaYP920xjafpu%26client_id%3D9586b49be80f489bb5c32e5614822cd1%26flow_ctx%3Dfba86dcd-96d7-4e4c-a61a-11087c9e62dc%253A1693990596'
 						endIcon={<LoginOutlined></LoginOutlined>}
 						sx={{
 							textTransform: 'none',

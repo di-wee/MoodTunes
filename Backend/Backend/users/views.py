@@ -1,3 +1,5 @@
+from allauth.socialaccount.providers.oauth2.views import OAuth2LoginView
+from allauth.socialaccount.providers.spotify.views import SpotifyOAuth2Adapter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -5,7 +7,6 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Error
 from allauth.socialaccount.models import SocialApp, SocialToken
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-
 
 
 class RefreshSpotifyToken(APIView):
@@ -37,4 +38,5 @@ class GetSpotifyToken(APIView):
             return Response({"access_token": token.token})
         except SocialToken.DoesNotExist:
             return Response({"error": "Spotify token not found for user"}, status=status.HTTP_404_NOT_FOUND)
+
 
