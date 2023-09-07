@@ -13,7 +13,7 @@ const theme = createTheme({
 });
 function App() {
 	return (
-		<div style={{ backgroundColor: indigo[800] }}>
+		<div style={{ backgroundColor: indigo[100] }}>
 			<main>
 				<ThemeProvider theme={theme}>
 					<Routes>

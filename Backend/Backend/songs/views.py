@@ -13,20 +13,34 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # sorting songs to mood
 def determine_mood(valence, energy, danceability):
-    if 0.75 <= valence <= 1.0 and 0.5 <= energy <= 1.0 and 0.5 <= danceability <= 1.0:
+    if 0.75 <= valence and 0.5 <= energy and 0.5 <= danceability:
         return "Happy"
-    elif 0.4 <= valence <= 0.7 and 0.2 <= energy <= 0.5 and 0.2 <= danceability <= 0.5:
-        return "Relaxed"
-    elif 0.0 <= valence <= 0.4 and 0.0 <= energy <= 0.4 and 0.2 <= danceability <= 0.5:
+    elif valence < 0.4 and energy <= 0.5:
         return "Sad"
-    elif 0.2 <= valence <= 0.5 and 0.7 <= energy <= 1.0 and 0.4 <= danceability <= 0.7:
+    elif 0.0 <= valence <= 0.5 and 0.7 <= energy and danceability <= 0.5:
         return "Angry"
+    elif 0.4 <= valence <= 0.7 and energy <= 0.3 and danceability <= 0.5:
+        return "Relaxed"
+    elif energy >= 0.8 and danceability >= 0.8:
+        return "Energetic"
+    elif 0.6 <= valence and energy <= 0.4 and danceability >= 0.6:
+        return "Chill"
+    elif 0.6 <= valence and 0.5 <= energy:
+        return "Motivational"
+    elif 0.4 <= valence <= 0.6 and energy <= 0.5:
+        return "Melancholic"
+    elif energy >= 0.7 and danceability >= 0.7:
+        return "Upbeat"
+    elif valence <= 0.4 and energy >= 0.7:
+        return "Intense"
     else:
-        return "Undefined"
+        return "Neutral"
+
+
 
 
 class SpotifySongSearch(APIView):
-    permission_classes = [IsAdminUser]
+
     def get(self, request):
         # fetching query 'track' param
         track = request.query_params.get('track', None)
@@ -50,7 +64,11 @@ class SpotifySongSearch(APIView):
         tracks = []
 
         combined_track_audio_features = zip(results['tracks']['items'], audio_features_list)
+        print(combined_track_audio_features)
         for track, audio_features in combined_track_audio_features:
+            print("Valence:", audio_features['valence'])
+            print("Energy:", audio_features['energy'])
+            print("Danceability:", audio_features['danceability'])
             mood_name = determine_mood(audio_features['valence'], audio_features['energy'],
                                        audio_features['danceability'])
 
@@ -66,7 +84,7 @@ class SpotifySongSearch(APIView):
             # song refer to retrieved or newly created object
             # created is a boolean to check if song is true or false
 
-            song, created = Songs.object.get_or_created(
+            song, created = Songs.objects.get_or_create(
                 spotify_id=track['id'],
                 defaults={
                     'name': track['name'],

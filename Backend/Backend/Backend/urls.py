@@ -25,5 +25,6 @@ urlpatterns = [
     path('songs/', include('songs.urls')),
     path('playlists/', include('playlists.urls')),
     path('playbacks/', include('playbacks.urls')),
+    path('spotify_tokens/', include('spotify_tokens.urls')),
 ]
 
