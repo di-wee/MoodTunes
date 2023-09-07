@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
 SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8000/callback'
+SPOTIPY_REDIRECT_URI = 'http://localhost:8000/'
 
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'spotipy',
     'playlists',
     'playbacks',
-    'spotify_tokens',
+    'temp_tokens',
 
 ]
 
@@ -161,11 +161,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'user-read-playback-state',
             'user-modify-playback-state',
             'streaming'
-        ]
+        ],
+
     }
 }
 
+
 SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_STORE_TOKENS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
