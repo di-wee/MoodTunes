@@ -1,11 +1,15 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { blue, indigo } from '@mui/material/colors';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Spotify } from 'mdi-material-ui';
 import { LoginOutlined } from '@mui/icons-material';
 
 const Login = () => {
+	const {}
+
+
+
 	const LoginWithSpotify = () => {
 		window.location.href =
 			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
@@ -56,9 +60,24 @@ const Login = () => {
 					}}>
 					<Typography
 						variant='h5'
-						sx={{ color: blue[50], marginBottom: '2rem' }}>
+						sx={{ color: blue[50], marginBottom: '1rem' }}>
 						Welcome Back!
 					</Typography>
+					<TextField
+						required
+						id='filled-required'
+						label='Required'
+						defaultValue='Spotify Username'
+						variant='filled'
+						sx={{
+							marginBottom: '1rem',
+							width: '60%',
+							backgroundColor: 'rgba(255, 255, 255, 0.5)', // 70% opaque white background
+							'& .MuiFilledInput-root': {
+								background: 'rgba(255, 255, 255, 0.7)',
+							},
+						}}
+					/>
 					<Button
 						onClick={LoginWithSpotify}
 						endIcon={<Spotify></Spotify>}
