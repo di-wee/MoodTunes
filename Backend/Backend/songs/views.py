@@ -11,27 +11,20 @@ from songs.models import Songs
 from django.core.exceptions import ObjectDoesNotExist
 
 
+
 # sorting songs to mood
 def determine_mood(valence, energy, danceability):
-    if 0.75 <= valence and 0.5 <= energy and 0.5 <= danceability:
+    if 0.7 <= valence and 0.4 <= energy and 0.4 <= danceability:
         return "Happy"
-    elif valence < 0.4 and energy <= 0.5:
+    elif valence < 0.35 and energy < 0.5:
         return "Sad"
-    elif 0.0 <= valence <= 0.5 and 0.7 <= energy and danceability <= 0.5:
+    elif valence <= 0.45 and 0.65 <= energy and danceability <= 0.45:
         return "Angry"
-    elif 0.4 <= valence <= 0.7 and energy <= 0.3 and danceability <= 0.5:
+    elif 0.35 <= valence <= 0.65 and energy <= 0.35 and danceability <= 0.45:
         return "Relaxed"
-    elif energy >= 0.8 and danceability >= 0.8:
+    elif energy >= 0.75 and danceability >= 0.75:
         return "Energetic"
-    elif 0.6 <= valence and energy <= 0.4 and danceability >= 0.6:
-        return "Chill"
-    elif 0.6 <= valence and 0.5 <= energy:
-        return "Motivational"
-    elif 0.4 <= valence <= 0.6 and energy <= 0.5:
-        return "Melancholic"
-    elif energy >= 0.7 and danceability >= 0.7:
-        return "Upbeat"
-    elif valence <= 0.4 and energy >= 0.7:
+    elif valence <= 0.4 and energy >= 0.65:
         return "Intense"
     else:
         return "Neutral"

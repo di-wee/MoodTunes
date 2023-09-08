@@ -38,7 +38,7 @@ def convert_python_to_json(data):
     for key, value in data.items():
         if value is None:
             data[key] = None
-            # check to handle nested dictionary 
+            # check to handle nested dictionary
         elif isinstance(value, dict):
             data[key] = convert_python_to_json(value)
 

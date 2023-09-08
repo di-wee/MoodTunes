@@ -1,8 +1,13 @@
 from django.contrib import admin
 from .models import Mood, SubMoods
+from songs.models import Songs
 
-admin.site.register(Mood)
-admin.site.register(SubMoods)
+class SongInline(admin.TabularInline):
+    model = Songs
+    extra = 1
 
 
-# Register your models here.
+class MoodAdmin(admin.ModelAdmin):
+    inlines = [SongInline]
+
+admin.site.register(Mood, MoodAdmin)
