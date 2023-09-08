@@ -1,18 +1,26 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { blue, indigo } from '@mui/material/colors';
-import React, { useContext } from 'react';
-import { Icon } from '@iconify/react';
+import React, { useContext, useEffect } from 'react';
 import { Spotify } from 'mdi-material-ui';
 import { LoginOutlined } from '@mui/icons-material';
+import UserContext from '../context/UserContext';
 
 const Login = () => {
-	const {}
+	const UserCtx = useContext(UserContext);
+	const { storeUsername, setStoreUsername } = UserCtx;
 
+	const handleUserChange = (event) => {
+		setStoreUsername(event.target.value);
+	};
 
+	useEffect(() => {
+		localStorage.setItem('username', storeUsername);
+	}, [storeUsername]);
 
 	const LoginWithSpotify = () => {
 		window.location.href =
 			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
+		console.log(storeUsername);
 	};
 
 	return (
@@ -64,10 +72,11 @@ const Login = () => {
 						Welcome Back!
 					</Typography>
 					<TextField
+						onChange={handleUserChange}
 						required
 						id='filled-required'
 						label='Required'
-						defaultValue='Spotify Username'
+						placeholder='Spotify Username'
 						variant='filled'
 						sx={{
 							marginBottom: '1rem',

@@ -53,7 +53,7 @@ class GetPlaylist(APIView):
         # similar to try catch
         try:
             playlist = Playlist.objects.get(id=playlist_id, user=request.user)
-            serializer = PlaylistSerializer(playlist)
+            serializer = PlaylistSerializer(playlist, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         # if !playlist it will return objectdoesnotexist

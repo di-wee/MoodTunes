@@ -4,15 +4,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import UserTempToken
 from rest_framework_simplejwt.tokens import RefreshToken
-
-from users.models import CustomUser
+from .serializers import TempTokenSerializer
+from allauth.socialaccount.models import SocialAccount
 
 
 class ExchangeTempTokenForJWT(APIView):
     def post(self, request):
         temp_token = request.data.get('temp_token')
         try:
-            temp_token_obj = UserTempToken.objects.get(token=temp_token)
+            temp_token_obj = UserTempToken.objects.get(temp_token=temp_token)
             jwt_token = get_jwt(temp_token_obj.user)
             return Response({"token": jwt_token}, status=status.HTTP_200_OK)
         except UserTempToken.DoesNotExist:
@@ -25,13 +25,17 @@ def get_jwt(user):
 
 
 class GetTempTokenByIdentifier(APIView):
-    def post(self, request, username):
+    def post(self, request):
         username = request.data.get('username')
+        print(username)
         try:
-            user = CustomUser.objects.get(username=username)
+            social_account = SocialAccount.objects.get(uid=username)
+            user = social_account.user
             temp_token = UserTempToken.objects.get(user=user)
-            return Response({"temp token": temp_token}, status=status.HTTP_200_OK)
-        except (CustomUser.DoesNotExist, UserTempToken.DoesNotExist):
+            serializer = TempTokenSerializer(temp_token)
+            print(temp_token)
+            return Response({"temptoken": serializer.data}, status=status.HTTP_200_OK)
+        except (SocialAccount.DoesNotExist, UserTempToken.DoesNotExist):
             return Response({'error': 'User or temp token not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
