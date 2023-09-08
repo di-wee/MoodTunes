@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
-import UserContext from '../context/UserContext';
+import { CircularProgress } from '@mui/material';
 
 const UserDashboard = () => {
 	const [userInfo, setUserInfo] = useState({});
 	const savedJWT = localStorage.getItem('jwtToken');
 	const [jwt, setJwt] = useState(savedJWT);
 	const savedUsername = localStorage.getItem('username');
-	const userCtx = useContext(UserContext);
-	const { storeUsername } = userCtx;
-	const [tempToken, setTempToken] = useState('');
+	const { display_name, images } = userInfo;
+	const [isLoading, setIsLoading] = useState(true);
 
 	const headers = {
 		Authorization: `Bearer ${jwt}`,
@@ -24,12 +23,14 @@ const UserDashboard = () => {
 			const data = await res.json();
 
 			if (res.ok) {
-				setUserInfo(data);
+				setUserInfo(data.extra_data);
 			} else {
 				console.log('error retrieving user details.');
 			}
 		} catch (error) {
 			console.error('error', error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -51,7 +52,6 @@ const UserDashboard = () => {
 			const data = await res.json();
 
 			if (res.ok) {
-				setTempToken(data.temptoken.temp_token);
 				return data.temptoken.temp_token;
 			} else {
 				console.log('error getting temp token');
@@ -105,16 +105,25 @@ const UserDashboard = () => {
 	useEffect(() => {
 		if (jwt) {
 			getUserDetails();
+			console.log(images);
 		}
-		console.log(userInfo);
 	}, [jwt]);
 
 	return (
 		<div>
-			<header>
-				<UserNav></UserNav>
-			</header>
-			<UserDisplay></UserDisplay>
+			{isLoading ? (
+				<CircularProgress></CircularProgress>
+			) : (
+				<>
+					<header>
+						<UserNav
+							displayname={display_name}
+							displaypic={images}
+						/>
+					</header>
+					<UserDisplay />
+				</>
+			)}
 		</div>
 	);
 };

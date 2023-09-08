@@ -18,6 +18,9 @@ const Login = () => {
 	}, [storeUsername]);
 
 	const LoginWithSpotify = () => {
+		if (!storeUsername) {
+			return alert('Please enter your spotify username.');
+		}
 		window.location.href =
 			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
 		console.log(storeUsername);
