@@ -27,7 +27,7 @@ def determine_mood(valence, energy, danceability):
     elif valence <= 0.4 and energy >= 0.65:
         return "Intense"
     else:
-        return "Neutral"
+        return "Whatever"
 
 
 

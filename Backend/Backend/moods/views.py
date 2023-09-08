@@ -4,6 +4,9 @@ from .serializers import MoodSerializer, SubMoodSerializer
 from .models import Mood, SubMoods
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
+from songs.models import Songs
+
+from songs.serializers import DatabaseSongSerializer
 
 
 class GetMoods(APIView):
@@ -69,3 +72,26 @@ class MoodMetrics(APIView):
             }, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetSongsFromMood(APIView):
+    def get(self, request, kwargs):
+        mood_to_filter = kwargs.get('mood')
+
+        if not mood_to_filter:
+            return Response({"error": "Mood not provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            mood = Mood.objects.get(name=mood_to_filter)
+            songs = Songs.objects.get(mood=mood)
+            song_list = [
+                {'name': song.name,
+                 'artist': song.artist,
+                 'uri': song.uri} for song in songs
+            ]
+            serializer = DatabaseSongSerializer(song_list, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Mood.DoesNotExist:
+            return Response({"error": "Mood does not exist"}, status=status.HTTP_404_NOT_FOUND)

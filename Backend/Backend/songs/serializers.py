@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import Songs
 
 class SpotifySongSerializer(serializers.Serializer):
     name = serializers.CharField()
@@ -6,3 +7,9 @@ class SpotifySongSerializer(serializers.Serializer):
     valence = serializers.FloatField()
     energy = serializers.FloatField()
     danceability = serializers.FloatField()
+
+
+class DatabaseSongSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Songs
+        fields = '__all__'

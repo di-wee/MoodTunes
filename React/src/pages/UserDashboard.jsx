@@ -88,9 +88,11 @@ const UserDashboard = () => {
 				if (newJwt) {
 					setJwt(newJwt);
 					await getUserDetails(newJwt);
+					console.log(userInfo);
 				}
 			}
 		};
+
 		fetchData();
 	}, []);
 
