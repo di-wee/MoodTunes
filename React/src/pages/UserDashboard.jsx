@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 const UserDashboard = () => {
 	const [userInfo, setUserInfo] = useState({});
@@ -99,15 +99,18 @@ const UserDashboard = () => {
 			{isLoading ? (
 				<CircularProgress />
 			) : (
-				<>
-					<header>
+				<Box sx={{ display: 'flex', flexDirection: 'row' }}>
+					<Box
+						sx={{ width: 240 /* Adjust based on the width of your Drawer */ }}>
 						<UserNav
 							displayname={userInfo.display_name}
 							displaypic={userInfo.images}
 						/>
-					</header>
-					<UserDisplay />
-				</>
+					</Box>
+					<Box sx={{ flexGrow: 1 }}>
+						<UserDisplay />
+					</Box>
+				</Box>
 			)}
 		</div>
 	);

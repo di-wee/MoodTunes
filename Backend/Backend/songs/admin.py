@@ -27,6 +27,7 @@ def determine_mood(valence, energy, danceability):
 class SongsAdmin(admin.ModelAdmin):
     change_list_template = 'admin/songs/songs/change_list.html'
 
+#setting custom template for the admin view
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}
 
