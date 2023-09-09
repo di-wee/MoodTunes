@@ -15,9 +15,16 @@ const theme = createTheme({
 
 function App() {
 	const [storeUsername, setStoreUsername] = useState();
+	const [getPlaylists, setGetPlaylists] = useState([]);
 
 	return (
-		<UserContext.Provider value={{ storeUsername, setStoreUsername }}>
+		<UserContext.Provider
+			value={{
+				storeUsername,
+				setStoreUsername,
+				getPlaylists,
+				setGetPlaylists,
+			}}>
 			<div style={{ backgroundColor: indigo[100] }}>
 				<main>
 					<ThemeProvider theme={theme}>

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
 	Box,
 	Button,
+	ButtonBase,
 	Divider,
 	Drawer,
 	List,
@@ -10,10 +11,39 @@ import {
 } from '@mui/material';
 import { blue, lightBlue } from '@mui/material/colors';
 import PlaylistCreationModal from './PlaylistCreationModal';
+import UserContext from '../context/UserContext';
 
 const UserNav = (props) => {
 	const { displaypic, displayname } = props;
 	const [showModal, setShowModal] = useState(false);
+	const userCtx = useContext(UserContext);
+	const { getPlaylists, setGetPlaylists } = userCtx;
+	const jwtTokenKey = 'jwtToken';
+	const getJWT = localStorage.getItem(jwtTokenKey);
+
+	const getAllPlaylist = async () => {
+		try {
+			const res = await fetch(import.meta.env.VITE_SERVER + '/playlists/get/', {
+				headers: {
+					Authorization: `Bearer ${getJWT}`,
+				},
+			});
+
+			const data = await res.json();
+
+			if (res.ok) {
+				setGetPlaylists(data);
+			} else {
+				console.log('error getting playlists');
+			}
+		} catch (error) {
+			console.log('error:', error);
+		}
+	};
+
+	useEffect(() => {
+		getAllPlaylist();
+	}, []);
 
 	return (
 		<div>
@@ -64,13 +94,23 @@ const UserNav = (props) => {
 							}}>
 							Create New Playlist
 						</Button>
+						{getPlaylists.map((playlist) => (
+							<ButtonBase
+								sx={{ marginTop: '0.5rem' }}
+								onClick={() => console.log(getPlaylists)}>
+								<Typography sx={{ color: lightBlue[900] }}>
+									{playlist.name}
+								</Typography>
+							</ButtonBase>
+						))}
 					</ListItem>
 				</List>
 			</Drawer>
 			{showModal && (
 				<PlaylistCreationModal
 					showModal={showModal}
-					setShowModal={setShowModal}></PlaylistCreationModal>
+					setShowModal={setShowModal}
+					getAllPlaylist={getAllPlaylist}></PlaylistCreationModal>
 			)}
 		</div>
 	);

@@ -45,12 +45,15 @@ class GetAllPlaylist(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        playlists = Playlist.objects.filter(user=request.user)
-        if playlists.exists():
-            serializer = PlaylistSerializer(playlists, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            playlists = Playlist.objects.filter(user=request.user)
+            if playlists.exists():
+                serializer = PlaylistSerializer(playlists, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Playlist.DoesNotExist as e:
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
 class GetPlaylist(APIView):

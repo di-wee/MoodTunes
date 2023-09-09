@@ -10,7 +10,7 @@ import { blue, lightBlue } from '@mui/material/colors';
 import React, { useState } from 'react';
 
 const PlaylistCreationModal = (props) => {
-	const { setShowModal, showModal } = props;
+	const { setShowModal, showModal, getAllPlaylist } = props;
 	const [playlistName, setPlaylistName] = useState('');
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
@@ -50,6 +50,7 @@ const PlaylistCreationModal = (props) => {
 
 			if (res.ok) {
 				alert('Playlist created!');
+				getAllPlaylist();
 			} else {
 				alert('Error creating playlist');
 			}
