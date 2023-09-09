@@ -72,13 +72,10 @@ class GetAllPlaylist(APIView):
     def get(self, request):
         try:
             playlists = Playlist.objects.filter(user=request.user)
-            if playlists.exists():
-                serializer = PlaylistSerializer(playlists, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
-        except Playlist.DoesNotExist as e:
-            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+            serializer = PlaylistSerializer(playlists, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GetPlaylist(APIView):

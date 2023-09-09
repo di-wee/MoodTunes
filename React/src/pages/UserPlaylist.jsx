@@ -9,6 +9,12 @@ const UserPlaylist = () => {
 	const userCtx = useContext(UserContext);
 	const { userInfo } = userCtx;
 	const location = useLocation();
+	let playlistId, playlist;
+
+	if (location && location.state) {
+		playlistId = location.state.playlistId;
+		playlist = location.state.playlist;
+	}
 
 	return (
 		<div>

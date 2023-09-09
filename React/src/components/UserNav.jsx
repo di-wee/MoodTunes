@@ -87,12 +87,16 @@ const UserNav = (props) => {
 				sx={{ '& .MuiDrawer-paper': { backgroundColor: blue[50] } }}>
 				<List>
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
-						<Typography
-							variant='h6'
-							component='div'
-							sx={{ color: lightBlue[800] }}>
-							MOOD TUNES
-						</Typography>
+						<Link
+							to='/user/dashboard/'
+							style={{ textDecoration: 'none' }}>
+							<Typography
+								variant='h6'
+								component='div'
+								sx={{ color: lightBlue[800] }}>
+								MOOD TUNES
+							</Typography>
+						</Link>
 					</ListItem>
 					<Divider sx={{ backgroundColor: blue[900] }} />
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
