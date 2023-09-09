@@ -39,6 +39,33 @@ class CreatePlaylist(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class DeletePlaylist(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, playlist_id):
+        user_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
+        token = SocialToken.objects.get(account=user_account)
+
+        sp = spotipy.Spotify(auth=token.token)
+
+        try:
+            playlist = Playlist.objects.get(pk=playlist_id, user=request.user)
+
+              # getting spotify playlist id
+            spotify_playlist_id = playlist.spotify_uri.split(':')[-1]
+
+            sp.current_user_unfollow_playlist(spotify_playlist_id)
+            playlist.delete()
+
+            return Response({'msg': 'Playlist deleted successfully'}, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 class GetAllPlaylist(APIView):
     permission_classes = [IsAuthenticated]
 

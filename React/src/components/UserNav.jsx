@@ -5,6 +5,7 @@ import {
 	ButtonBase,
 	Divider,
 	Drawer,
+	IconButton,
 	List,
 	ListItem,
 	Typography,
@@ -12,7 +13,8 @@ import {
 import { blue, lightBlue } from '@mui/material/colors';
 import PlaylistCreationModal from './PlaylistCreationModal';
 import UserContext from '../context/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Delete } from '@mui/icons-material';
 
 const UserNav = (props) => {
 	const { displaypic, displayname } = props;
@@ -21,6 +23,9 @@ const UserNav = (props) => {
 	const { getPlaylists, setGetPlaylists } = userCtx;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
+	const [redirectToPlaylist, setRedirectToPlaylist] = useState(false);
+	const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+	const navigate = useNavigate();
 
 	const getAllPlaylist = async () => {
 		try {
@@ -45,6 +50,34 @@ const UserNav = (props) => {
 	useEffect(() => {
 		getAllPlaylist();
 	}, []);
+
+	const handlePlaylistClick = (playlist) => {
+		navigate('/user/playlist', {
+			state: { playlist: playlist },
+		});
+	};
+
+	const deletePlaylist = async (playlistId) => {
+		try {
+			const res = await fetch(
+				import.meta.env.VITE_SERVER + '/playlists/delete/' + playlistId,
+				{
+					method: 'DELETE',
+					headers: {
+						Authorization: `Bearer ${getJWT}`,
+					},
+				}
+			);
+
+			if (res.ok) {
+				getAllPlaylist();
+			} else {
+			}
+			console.log('Error from server:', await res.text());
+		} catch (error) {
+			console.log('error:', error);
+		}
+	};
 
 	return (
 		<div>
@@ -99,19 +132,26 @@ const UserNav = (props) => {
 							Create New Playlist
 						</Button>
 						{getPlaylists.map((playlist) => (
-							<ButtonBase
-								sx={{ marginTop: '0.5rem' }}
-								onClick={() => console.log(getPlaylists)}>
-								<Link
-									to={{
-										pathname: '/user/playlist',
-										state: { playlistId: playlist.id, playlist: playlist },
+							<>
+								<Box
+									key={playlist.id}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										marginTop: '0.5rem',
 									}}>
-									<Typography sx={{ color: lightBlue[900] }}>
-										{playlist.name}
-									</Typography>
-								</Link>
-							</ButtonBase>
+									<ButtonBase
+										sx={{ marginTop: '0.5rem' }}
+										onClick={() => handlePlaylistClick(playlist)}>
+										<Typography sx={{ color: lightBlue[900] }}>
+											{playlist.name}
+										</Typography>
+									</ButtonBase>
+									<IconButton onClick={() => deletePlaylist(playlist.id)}>
+										<Delete></Delete>
+									</IconButton>
+								</Box>
+							</>
 						))}
 					</ListItem>
 				</List>
