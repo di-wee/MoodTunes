@@ -5,4 +5,4 @@ from .models import Playlist
 class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        fields = ('id', 'name', 'song', 'user_id',)
+        fields = '__all__'

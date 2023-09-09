@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
 SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8000/'
+SPOTIPY_REDIRECT_URI = 'http://localhost:8001/'
 
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
@@ -159,7 +159,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'user-read-playback-state',
             'user-modify-playback-state',
-            'streaming'
+            'streaming',
+            'playlist-modify-public',
         ],
 
     }

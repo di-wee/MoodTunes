@@ -1,41 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Mood from './Mood';
 import { Box, ButtonBase, Typography } from '@mui/material';
 import './UserDisplay.css';
 import { lightBlue } from '@mui/material/colors';
 const UserDisplay = () => {
-	const images = [
-		{
-			url: '/happy.png',
-			title: 'Happy',
-			width: '35%',
-		},
-		{
-			url: '/sad.png',
-			title: 'Sad',
-			width: '35%',
-		},
-		{
-			url: '/angry.png',
-			title: 'Angry',
-			width: '35%',
-		},
-		{
-			url: '/energetic.png',
-			title: 'Energetic',
-			width: '35%',
-		},
-		{
-			url: '/relaxed.png',
-			title: 'Relaxed',
-			width: '35%',
-		},
-		{
-			url: '/intense.png',
-			title: 'Intense',
-			width: '35%',
-		},
-	];
+	const [images, setImages] = useState([]);
+
+	const getMoods = async () => {
+		try {
+			const res = await fetch(import.meta.env.VITE_SERVER + '/moods/');
+			const data = await res.json();
+
+			if (res.ok) {
+				const imagesUrl = [
+					'/happy.png',
+					'/sad.png',
+					'/angry.png',
+					'/relaxed.png',
+					'/energetic.png',
+					'/intense.png',
+					'/whatever.png',
+				];
+
+				const images = data.map((mood, index) => ({
+					url: imagesUrl[index],
+					width: '35%',
+					title: mood.name,
+				}));
+
+				setImages(images);
+			}
+		} catch (error) {
+			console.log('error:', error);
+		}
+	};
+
+	useEffect(() => {
+		getMoods();
+	}, []);
 
 	return (
 		<div>
@@ -56,8 +58,9 @@ const UserDisplay = () => {
 					}}>
 					{images.map((image) => (
 						<ButtonBase
+							onClick={() => {}}
 							focusRipple
-							key={image.title}
+							key={image.id}
 							className='imageButton'
 							sx={{
 								width: image.width,

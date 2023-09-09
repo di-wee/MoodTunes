@@ -9,28 +9,36 @@ from django.core.exceptions import ObjectDoesNotExist
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id=settings.SPOTIPY_CLIENT_ID,
-    client_secret=settings.SPOTIPY_CLIENT_SECRET,
-    redirect_uri=settings.SPOTIPY_REDIRECT_URI))
+from allauth.socialaccount.models import SocialAccount
 
 
 class CreatePlaylist(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = PlaylistSerializer(data=request.data)
 
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI,
+            scope="playlist-modify-public"))
+
+        data = {
+            **request.data,
+            'user': request.user.id
+        }
+
+        serializer = PlaylistSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            spotify_playlist = sp.user_playlist_create(request.user.username, serializer.data['name']) # passing Spotify username and the name of the playlist to get info of playlist
-            playlist = Playlist.objects.get(pk=serializer.data['id'])  # getting my og playlist not spotify
-            playlist.spotify_uri = spotify_playlist['uri']  # updating spotify_uri field for playlist with data retrieved
+            user = SocialAccount.objects.get(user_id=request.user.id)
+            spotify_playlist = sp.user_playlist_create(user.uid, serializer.data['name'])
+            playlist = Playlist.objects.get(pk=serializer.data['id'])
+            playlist.spotify_uri = spotify_playlist['uri']
             playlist.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Error creating playlist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetAllPlaylist(APIView):
@@ -70,11 +78,17 @@ class AddSongToPlaylist(APIView):
     def post(self, request, playlist_id):
         song_id = request.data.get('song_id')
 
+        # Initialize Spotify instance here as well
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=settings.SPOTIPY_CLIENT_ID,
+            client_secret=settings.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=settings.SPOTIPY_REDIRECT_URI,
+            scope="playlist-modify-public"))
+
         try:
             playlist = Playlist.objects.get(pk=playlist_id)
             song = Songs.objects.get(pk=song_id)
             playlist.song.add(song)
-
             sp.playlist_add_items(playlist.spotify_uri, [song.uri])  # add songs into user's spotify account
 
             return Response({'msg': 'Song added to playlist'}, status=status.HTTP_200_OK)
@@ -83,4 +97,4 @@ class AddSongToPlaylist(APIView):
             return Response({'error': 'Playlist or Song not found'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
