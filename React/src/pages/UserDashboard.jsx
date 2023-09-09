@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
 import { Box, CircularProgress } from '@mui/material';
+import UserContext from '../context/UserContext';
 
 const UserDashboard = () => {
-	const [userInfo, setUserInfo] = useState({});
+	const userCtx = useContext(UserContext);
+	const { userInfo, setUserInfo } = userCtx;
 	const [jwt, setJwt] = useState(localStorage.getItem('jwtToken'));
 	const savedUsername = localStorage.getItem('username');
 	const [isLoading, setIsLoading] = useState(true);

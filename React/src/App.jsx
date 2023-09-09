@@ -16,6 +16,7 @@ const theme = createTheme({
 function App() {
 	const [storeUsername, setStoreUsername] = useState();
 	const [getPlaylists, setGetPlaylists] = useState([]);
+	const [userInfo, setUserInfo] = useState({});
 
 	return (
 		<UserContext.Provider
@@ -24,6 +25,8 @@ function App() {
 				setStoreUsername,
 				getPlaylists,
 				setGetPlaylists,
+				userInfo,
+				setUserInfo,
 			}}>
 			<div style={{ backgroundColor: indigo[100] }}>
 				<main>

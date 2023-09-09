@@ -102,7 +102,11 @@ const UserNav = (props) => {
 							<ButtonBase
 								sx={{ marginTop: '0.5rem' }}
 								onClick={() => console.log(getPlaylists)}>
-								<Link to='user/playlist'>
+								<Link
+									to={{
+										pathname: '/user/playlist',
+										state: { playlistId: playlist.id, playlist: playlist },
+									}}>
 									<Typography sx={{ color: lightBlue[900] }}>
 										{playlist.name}
 									</Typography>
