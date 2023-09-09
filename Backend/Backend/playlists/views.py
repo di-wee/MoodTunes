@@ -9,19 +9,17 @@ from django.core.exceptions import ObjectDoesNotExist
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from django.conf import settings
-from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount.models import SocialAccount, SocialToken
 
 
 class CreatePlaylist(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
+        token_obj = SocialToken.objects.get(account=user_social_account)
 
-        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-            client_id=settings.SPOTIPY_CLIENT_ID,
-            client_secret=settings.SPOTIPY_CLIENT_SECRET,
-            redirect_uri=settings.SPOTIPY_REDIRECT_URI,
-            scope="playlist-modify-public"))
+        sp = spotipy.Spotify(auth=token_obj.token)
 
         data = {
             **request.data,
@@ -81,12 +79,10 @@ class AddSongToPlaylist(APIView):
     def post(self, request, playlist_id):
         song_id = request.data.get('song_id')
 
-        # Initialize Spotify instance here as well
-        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-            client_id=settings.SPOTIPY_CLIENT_ID,
-            client_secret=settings.SPOTIPY_CLIENT_SECRET,
-            redirect_uri=settings.SPOTIPY_REDIRECT_URI,
-            scope="playlist-modify-public"))
+        user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
+        token_obj = SocialToken.objects.get(account=user_social_account)
+
+        sp = spotipy.Spotify(auth=token_obj.token)
 
         try:
             playlist = Playlist.objects.get(pk=playlist_id)

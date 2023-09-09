@@ -12,6 +12,7 @@ import {
 import { blue, lightBlue } from '@mui/material/colors';
 import PlaylistCreationModal from './PlaylistCreationModal';
 import UserContext from '../context/UserContext';
+import { Link } from 'react-router-dom';
 
 const UserNav = (props) => {
 	const { displaypic, displayname } = props;
@@ -76,6 +77,9 @@ const UserNav = (props) => {
 						<Typography sx={{ color: lightBlue[900] }}>
 							Welcome back, {displayname}
 						</Typography>
+						<Button>
+							<Typography>Log out</Typography>
+						</Button>
 					</ListItem>
 					<Divider sx={{ backgroundColor: blue[900] }} />
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -98,9 +102,11 @@ const UserNav = (props) => {
 							<ButtonBase
 								sx={{ marginTop: '0.5rem' }}
 								onClick={() => console.log(getPlaylists)}>
-								<Typography sx={{ color: lightBlue[900] }}>
-									{playlist.name}
-								</Typography>
+								<Link to='user/playlist'>
+									<Typography sx={{ color: lightBlue[900] }}>
+										{playlist.name}
+									</Typography>
+								</Link>
 							</ButtonBase>
 						))}
 					</ListItem>

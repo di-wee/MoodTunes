@@ -1,5 +1,6 @@
 import React from 'react';
 import Tracks from '../components/Tracks';
+import UserNav from '../components/UserNav';
 
 const UserPlaylist = () => {
 	return (
