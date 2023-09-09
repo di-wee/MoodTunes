@@ -3,9 +3,16 @@ import Mood from './Mood';
 import { Box, ButtonBase, Typography } from '@mui/material';
 import './UserDisplay.css';
 import { lightBlue } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom';
 const UserDisplay = () => {
 	const [images, setImages] = useState([]);
+	const navigate = useNavigate();
 
+	const handleMoodClick = (mood) => {
+		navigate('/user/songlist', {
+			state: { mood: mood },
+		});
+	};
 	const getMoods = async () => {
 		try {
 			const res = await fetch(import.meta.env.VITE_SERVER + '/moods/');
@@ -58,7 +65,9 @@ const UserDisplay = () => {
 					}}>
 					{images.map((image) => (
 						<ButtonBase
-							onClick={() => {}}
+							onClick={() => {
+								handleMoodClick(image);
+							}}
 							focusRipple
 							key={image.id}
 							className='imageButton'

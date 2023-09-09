@@ -7,6 +7,7 @@ import Main from './pages/Main';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { indigo } from '@mui/material/colors';
 import UserContext from './context/UserContext';
+import SongList from './pages/SongList';
 const theme = createTheme({
 	typography: {
 		fontFamily: 'Roboto Condensed, sans-serif',
@@ -47,6 +48,10 @@ function App() {
 							<Route
 								path='/admin/dashboard'
 								element={<AdminDashboard />}
+							/>
+							<Route
+								path='/user/songlist'
+								element={<SongList />}
 							/>
 						</Routes>
 					</ThemeProvider>
