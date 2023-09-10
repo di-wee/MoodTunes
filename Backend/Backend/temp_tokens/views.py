@@ -8,6 +8,7 @@ from .serializers import TempTokenSerializer
 from allauth.socialaccount.models import SocialAccount
 
 
+
 class ExchangeTempTokenForJWT(APIView):
     def post(self, request):
         temp_token = request.data.get('temp_token')

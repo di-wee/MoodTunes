@@ -167,9 +167,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
+SOCIALACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_STORE_TOKENS = True
+ACCOUNT_LOGOUT_ON_GET = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -193,3 +194,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'http://localhost:5173/user/dashboard'
+LOGOUT_REDIRECT_URL = 'http://localhost:5173/'

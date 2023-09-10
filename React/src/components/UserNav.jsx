@@ -27,6 +27,10 @@ const UserNav = (props) => {
 	const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 	const navigate = useNavigate();
 
+	const LogoutFromAccount = () => {
+		window.location.href = import.meta.env.VITE_SERVER + '/accounts/logout';
+	};
+
 	const getAllPlaylist = async () => {
 		try {
 			const res = await fetch(import.meta.env.VITE_SERVER + '/playlists/get/', {
@@ -114,7 +118,7 @@ const UserNav = (props) => {
 						<Typography sx={{ color: lightBlue[900] }}>
 							Welcome back, {displayname}
 						</Typography>
-						<Button>
+						<Button onClick={LogoutFromAccount}>
 							<Typography>Log out</Typography>
 						</Button>
 					</ListItem>
