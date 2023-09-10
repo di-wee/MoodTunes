@@ -31,6 +31,7 @@ class Play(APIView):
     def post(self, request):
         uri = request.data.get('uri', None)  # getting uri from req.body
         uri_type = request.data.get('uri_type', 'track')  # if no uri_type specified, default will be 'track'
+        device_id = request.data.get('device_id', None)  # get device_id from request
 
         # not declared globally in case multiple users use app at the same time
         user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
@@ -40,13 +41,13 @@ class Play(APIView):
         try:
             if uri:
                 if uri_type == 'track':
-                    sp.start_playback(uris=[uri])  # playback via uri stated in req.body
+                    sp.start_playback(device_id=device_id, uris=[uri])  # playback via uri stated in req.body
                 elif uri_type == 'playlist':
-                    sp.start_playback(context_uri=uri)
+                    sp.start_playback(device_id=device_id, context_uri=uri)
                 else:
                     return Response({'error': 'Invalid URI type'}, status=status.HTTP_404_NOT_FOUND)
             else:
-                sp.start_playback()
+                sp.start_playback(device_id=device_id)
             return Response({'msg': 'Playback started!'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -56,14 +57,13 @@ class Pause(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        uri = request.data.get('uri', None)
-        uri_type = request.data.get('uri_type', 'track')
+        device_id = request.data.get('device_id', None)  # get device_id from request
+
         user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
         token_obj = SocialToken.objects.get(account=user_social_account)
-
         sp = spotipy.Spotify(auth=token_obj.token)
         try:
-            sp.pause_playback()
+            sp.pause_playback(device_id=device_id)
             return Response({'msg': 'Playback is paused.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -73,14 +73,13 @@ class Next(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        uri = request.data.get('uri', None)
-        uri_type = request.data.get('uri_type', 'tracks')
+        device_id = request.data.get('device_id', None)  # get device_id from request
+
         user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
         token_obj = SocialToken.objects.get(account=user_social_account)
-
         sp = spotipy.Spotify(auth=token_obj.token)
         try:
-            sp.next_track()
+            sp.next_track(device_id=device_id)
             return Response({'msg': 'Next track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -90,15 +89,13 @@ class Previous(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        uri = request.data.get('uri', None)
-        uri_type = request.data.get('uri_type', 'track')
+        device_id = request.data.get('device_id', None)  # get device_id from request
+
         user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
         token_obj = SocialToken.objects.get(account=user_social_account)
-
         sp = spotipy.Spotify(auth=token_obj.token)
-
         try:
-            sp.previous_track()
+            sp.previous_track(device_id=device_id)
             return Response({'msg': 'Previous track'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

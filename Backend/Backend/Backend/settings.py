@@ -160,6 +160,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'user-read-playback-state',
             'user-modify-playback-state',
+            'user-read-currently-playing',
             'streaming',
             'playlist-modify-public',
             'user-read-private',

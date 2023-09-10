@@ -19,6 +19,7 @@ function App() {
 	const [getPlaylists, setGetPlaylists] = useState([]);
 	const [userInfo, setUserInfo] = useState({});
 	const [currentMood, setCurrentMood] = useState([]);
+	const [deviceId, setDeviceId] = useState('');
 
 	return (
 		<UserContext.Provider
@@ -31,6 +32,8 @@ function App() {
 				setUserInfo,
 				currentMood,
 				setCurrentMood,
+				deviceId,
+				setDeviceId,
 			}}>
 			<div style={{ backgroundColor: indigo[100] }}>
 				<main>
