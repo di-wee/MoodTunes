@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from .serializers import MoodSerializer, SubMoodSerializer
 from .models import Mood, SubMoods
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from songs.models import Songs
 
 from songs.serializers import DatabaseSongSerializer
@@ -56,34 +56,20 @@ class CreateSubMoods(APIView):
             return Response({'error': 'Unable to create sub-mood.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MoodMetrics(APIView):
-    permission_classes = [IsAdminUser]
-
-    def get(self, request):
-        try:
-            moods = Mood.objects.all().order_by('-count')
-            submoods = SubMoods.objects.all().order_by('-count')
-
-            mood_data = [{'name': mood.name, 'count': mood.count} for mood in moods]
-            submood_data = [{'name': submood.name, 'count': submood.count} for submood in submoods]
-            return Response({
-                "moods": mood_data,
-                "submoods": submood_data,
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetSongsFromMood(APIView):
-    def get(self, request, kwargs):
-        mood_to_filter = kwargs.get('mood')
+
+    permission_classes = [IsAuthenticated]
+    def get(self, request, mood):
+        mood_to_filter = mood
 
         if not mood_to_filter:
             return Response({"error": "Mood not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             mood = Mood.objects.get(name=mood_to_filter)
-            songs = Songs.objects.get(mood=mood)
+            songs = Songs.objects.filter(mood=mood)
             song_list = [
                 {'name': song.name,
                  'artist': song.artist,

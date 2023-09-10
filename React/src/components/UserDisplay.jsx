@@ -95,7 +95,6 @@ const UserDisplay = () => {
 					))}
 				</Box>
 			</Box>
-			<Mood></Mood>
 		</div>
 	);
 };

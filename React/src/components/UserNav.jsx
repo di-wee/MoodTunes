@@ -23,8 +23,7 @@ const UserNav = (props) => {
 	const { getPlaylists, setGetPlaylists } = userCtx;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
-	const [redirectToPlaylist, setRedirectToPlaylist] = useState(false);
-	const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+
 	const navigate = useNavigate();
 
 	const LogoutFromAccount = () => {

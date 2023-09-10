@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import UserNav from '../components/UserNav';
 import UserContext from '../context/UserContext';
 import { Box, Button } from '@mui/material';
+import Mood from '../components/Mood';
 
 const SongList = () => {
 	const userCtx = useContext(UserContext);
@@ -23,7 +24,7 @@ const SongList = () => {
 					/>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}>
-					<Button onClick={() => console.log(mood)}>Click me</Button>
+					<Mood mood={mood}></Mood>
 				</Box>
 			</Box>
 		</div>

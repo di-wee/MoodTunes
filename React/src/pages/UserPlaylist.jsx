@@ -26,7 +26,6 @@ const UserPlaylist = () => {
 					/>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}>
-					<Button onClick={() => console.log(playlist)}>Click me</Button>
 					<Tracks></Tracks>
 				</Box>
 			</Box>
