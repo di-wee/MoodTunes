@@ -70,61 +70,79 @@ function WebPlayback(props) {
 
 	return (
 		<AppBar
-			position='fixed'
+			position='absolute'
 			sx={{
-				top: 'auto',
-				bottom: 0,
+				right: '10px',
+				top: '10px',
 				zIndex: 9999,
 				backgroundColor: indigo[300],
+				width: '300px', // Match this width in the Toolbar or its children as needed
 			}}>
 			<Toolbar
 				sx={{
 					justifyContent: 'center',
 					paddingLeft: '5%',
 					paddingRight: '5%',
+					width: '100%', // Take up all available space within the AppBar
 				}}>
 				<div
 					style={{
 						display: 'flex',
 						alignItems: 'center',
-						justifyContent: 'center',
-						flex: 1,
+						justifyContent: 'space-between', // Adjust this to put the content into positions you'd prefer
+						width: '100%', // Take up all available space within the Toolbar
 					}}>
-					<CardMedia
-						component='img'
-						sx={{ maxHeight: '4rem', maxWidth: '4rem', marginRight: '1rem' }}
-						image={currentTrack.album.images[0].url}
-					/>
-					<div>
-						<Typography variant='subtitle1'>{currentTrack.name}</Typography>
-						<Typography variant='body2'>
-							{currentTrack.artists[0].name}
-						</Typography>
+					<div
+						style={{
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}>
+						<CardMedia
+							component='img'
+							sx={{
+								maxHeight: '4rem',
+								maxWidth: '4rem',
+								marginRight: '1rem',
+								padding: '0.5rem',
+							}}
+							image={currentTrack.album.images[0].url}
+						/>
+						<div>
+							<Typography variant='subtitle1'>{currentTrack.name}</Typography>
+							<Typography variant='body2'>
+								{currentTrack.artists[0].name}
+							</Typography>
+						</div>
 					</div>
-				</div>
 
-				<div
-					style={{
-						marginRight: '50rem',
-					}}>
-					<IconButton
-						variant='contained'
-						color='secondary'
-						onClick={() => player.previousTrack()}>
-						<FastRewind></FastRewind>
-					</IconButton>
-					<IconButton
-						variant='contained'
-						color='secondary'
-						onClick={() => (isPaused ? playSong() : pauseSong())}>
-						{isPaused ? <PlayBox></PlayBox> : <PauseBox></PauseBox>}
-					</IconButton>
-					<IconButton
-						variant='contained'
-						color='secondary'
-						onClick={() => player.nextTrack()}>
-						<FastForward></FastForward>
-					</IconButton>
+					<div
+						style={{
+							display: 'flex',
+							alignItems: 'center',
+						}}>
+						<IconButton
+							style={{ marginRight: '-8px' }}
+							variant='contained'
+							color='secondary'
+							onClick={() => player.previousTrack()}>
+							<FastRewind />
+						</IconButton>
+						<IconButton
+							style={{ margin: '0 -8px' }}
+							variant='contained'
+							color='secondary'
+							onClick={() => (isPaused ? playSong() : pauseSong())}>
+							{isPaused ? <PlayBox /> : <PauseBox />}
+						</IconButton>
+						<IconButton
+							style={{ marginLeft: '-8px' }}
+							variant='contained'
+							color='secondary'
+							onClick={() => player.nextTrack()}>
+							<FastForward />
+						</IconButton>
+					</div>
 				</div>
 			</Toolbar>
 		</AppBar>
