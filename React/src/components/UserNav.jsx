@@ -17,10 +17,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Delete } from '@mui/icons-material';
 
 const UserNav = (props) => {
-	const { displaypic, displayname } = props;
+	const { displaypic, displayname, mood } = props;
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
-	const { getPlaylists, setGetPlaylists } = userCtx;
+	const { getPlaylists, setGetPlaylists, currentMood } = userCtx;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 
@@ -58,6 +58,7 @@ const UserNav = (props) => {
 		navigate('/user/playlist', {
 			state: { playlist: playlist },
 		});
+		console.log(mood);
 	};
 
 	const deletePlaylist = async (playlistId) => {
@@ -125,6 +126,9 @@ const UserNav = (props) => {
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
 						<Typography sx={{ color: lightBlue[900] }}>
 							Current Mood:
+						</Typography>
+						<Typography sx={{ color: lightBlue[600] }}>
+							{currentMood ? currentMood.title : ''}
 						</Typography>
 					</ListItem>
 					<Divider sx={{ backgroundColor: blue[900] }} />

@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
-
+# this essentially converts a string of object into an object for one of my table data that is inbuilt
 class SocialAccountSerializer(serializers.ModelSerializer):
     # to_representation defines output; trying to override method for custom output
     def to_representation(self, instance):

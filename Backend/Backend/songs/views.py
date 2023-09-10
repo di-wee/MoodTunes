@@ -49,16 +49,19 @@ class SpotifySongSearch(APIView):
         # to search for track to get ID that will allow me to access track audio features
 
         results = sp.search(q=track, limit=10)
+        print(f"Number of tracks returned from Spotify search: {len(results['tracks']['items'])}")
 
         # one api call to get audio features
         track_ids = [track['id'] for track in results['tracks']['items']]
         audio_features_list = sp.audio_features(track_ids)
+        print(f"Number of audio features returned: {len(audio_features_list)}")
 
         tracks = []
 
         combined_track_audio_features = zip(results['tracks']['items'], audio_features_list)
         print(combined_track_audio_features)
         for track, audio_features in combined_track_audio_features:
+            print(f"Processing track: {track['name']} by {track['artists'][0]['name']}")
             print("Valence:", audio_features['valence'])
             print("Energy:", audio_features['energy'])
             print("Danceability:", audio_features['danceability'])
@@ -97,6 +100,7 @@ class SpotifySongSearch(APIView):
                 'uri': track['uri'],
             }
             tracks.append(song_data)
+            print(f"Number of tracks successfully processed: {len(tracks)}")
 
         serializer = SpotifySongSerializer(tracks, many=True)
         return Response(serializer.data)

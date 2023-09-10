@@ -7,8 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 from songs.models import Songs
 from django.core.exceptions import ObjectDoesNotExist
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-from django.conf import settings
 from allauth.socialaccount.models import SocialAccount, SocialToken
 
 

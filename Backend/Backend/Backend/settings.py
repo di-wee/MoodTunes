@@ -162,6 +162,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'user-modify-playback-state',
             'streaming',
             'playlist-modify-public',
+            'user-read-private',
+            'app-remote-control',
         ],
 
     }

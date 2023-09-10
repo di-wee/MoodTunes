@@ -18,6 +18,7 @@ function App() {
 	const [storeUsername, setStoreUsername] = useState();
 	const [getPlaylists, setGetPlaylists] = useState([]);
 	const [userInfo, setUserInfo] = useState({});
+	const [currentMood, setCurrentMood] = useState([]);
 
 	return (
 		<UserContext.Provider
@@ -28,6 +29,8 @@ function App() {
 				setGetPlaylists,
 				userInfo,
 				setUserInfo,
+				currentMood,
+				setCurrentMood,
 			}}>
 			<div style={{ backgroundColor: indigo[100] }}>
 				<main>

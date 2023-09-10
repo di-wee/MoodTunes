@@ -70,12 +70,7 @@ class GetSongsFromMood(APIView):
         try:
             mood = Mood.objects.get(name=mood_to_filter)
             songs = Songs.objects.filter(mood=mood)
-            song_list = [
-                {'name': song.name,
-                 'artist': song.artist,
-                 'uri': song.uri} for song in songs
-            ]
-            serializer = DatabaseSongSerializer(song_list, many=True)
+            serializer = DatabaseSongSerializer(songs, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 

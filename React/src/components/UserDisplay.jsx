@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Mood from './Mood';
 import { Box, ButtonBase, Typography } from '@mui/material';
 import './UserDisplay.css';
 import { lightBlue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 const UserDisplay = () => {
-	const [images, setImages] = useState([]);
+	const [mood, setMood] = useState([]);
+	const userCtx = useContext(UserContext);
+	const { setCurrentMood } = userCtx;
 	const navigate = useNavigate();
 
 	const handleMoodClick = (mood) => {
-		navigate('/user/songlist', {
-			state: { mood: mood },
-		});
+		setCurrentMood(mood);
+		navigate('/user/songlist');
 	};
 	const getMoods = async () => {
 		try {
@@ -35,7 +37,7 @@ const UserDisplay = () => {
 					title: mood.name,
 				}));
 
-				setImages(images);
+				setMood(images);
 			}
 		} catch (error) {
 			console.log('error:', error);
@@ -63,21 +65,21 @@ const UserDisplay = () => {
 						width: '100%',
 						justifyContent: 'center',
 					}}>
-					{images.map((image) => (
+					{mood.map((mood) => (
 						<ButtonBase
 							onClick={() => {
-								handleMoodClick(image);
+								handleMoodClick(mood);
 							}}
 							focusRipple
-							key={image.id}
+							key={mood.id}
 							className='imageButton'
 							sx={{
-								width: image.width,
+								width: mood.width,
 								margin: '1.5rem',
 							}}>
 							<span
 								className='imageSrc'
-								style={{ backgroundImage: `url(${image.url})` }}></span>
+								style={{ backgroundImage: `url(${mood.url})` }}></span>
 							<span className='imageBackdrop'></span>
 							<span className='image'>
 								<Typography
@@ -87,7 +89,7 @@ const UserDisplay = () => {
 										paddingTop: '8px',
 										paddingBottom: '14px',
 									}}>
-									{image.title}
+									{mood.title}
 									<span className='imageMarked'></span>
 								</Typography>
 							</span>
