@@ -20,7 +20,8 @@ const UserNav = (props) => {
 	const { displaypic, displayname, mood } = props;
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
-	const { getPlaylists, setGetPlaylists, currentMood } = userCtx;
+	const { getPlaylists, setGetPlaylists, currentMood, getAllPlaylist } =
+		userCtx;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 
@@ -28,26 +29,6 @@ const UserNav = (props) => {
 
 	const LogoutFromAccount = () => {
 		window.location.href = import.meta.env.VITE_SERVER + '/accounts/logout';
-	};
-
-	const getAllPlaylist = async () => {
-		try {
-			const res = await fetch(import.meta.env.VITE_SERVER + '/playlists/get/', {
-				headers: {
-					Authorization: `Bearer ${getJWT}`,
-				},
-			});
-
-			const data = await res.json();
-
-			if (res.ok) {
-				setGetPlaylists(data);
-			} else {
-				console.log('error getting playlists');
-			}
-		} catch (error) {
-			console.log('error:', error);
-		}
 	};
 
 	useEffect(() => {

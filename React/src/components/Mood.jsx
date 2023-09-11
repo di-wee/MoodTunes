@@ -3,6 +3,7 @@ import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
 
 import { lightBlue } from '@mui/material/colors';
 import {
+	AddCircle,
 	FastForward,
 	FastRewind,
 	PauseCircle,
@@ -10,6 +11,7 @@ import {
 } from '@mui/icons-material';
 import SpotifyPlayerComponent from './SpotifyPlayer';
 import UserContext from '../context/UserContext';
+import AddToPlaylistModal from './AddToPlaylistModal';
 
 const Mood = (props) => {
 	const [songs, setSongs] = useState([]);
@@ -19,7 +21,9 @@ const Mood = (props) => {
 	const playerRef = useRef(null);
 	const [player, setPlayer] = useState(null);
 	const userCtx = useContext(UserContext);
-	const { deviceId } = userCtx;
+	const { deviceId, setSongId } = userCtx;
+	const [showModal, setShowModal] = useState(false);
+
 	// pagination logic
 	const [page, setPage] = useState(1);
 	const itemsPerPage = 10;
@@ -30,6 +34,11 @@ const Mood = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
+	};
+
+	const handleAddToPlaylistClick = (songid) => {
+		setShowModal(true);
+		setSongId(songid);
 	};
 
 	const fetchToken = async () => {
@@ -207,6 +216,10 @@ const Mood = (props) => {
 									sx={{ cursor: 'pointer' }}
 									onClick={() => pauseSong()}
 									color='primary'></PauseCircle>
+								<AddCircle
+									sx={{ cursor: 'pointer' }}
+									onClick={() => handleAddToPlaylistClick(song.id)}
+									color='primary'></AddCircle>
 							</Box>
 						</div>
 					))}
@@ -223,6 +236,11 @@ const Mood = (props) => {
 					playSong={playSong}
 					pauseSong={pauseSong}
 					token={token}></SpotifyPlayerComponent>
+			)}
+			{showModal && token && (
+				<AddToPlaylistModal
+					setShowModal={setShowModal}
+					showModal={showModal}></AddToPlaylistModal>
 			)}
 		</div>
 	);

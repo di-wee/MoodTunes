@@ -74,7 +74,6 @@ function WebPlayback(props) {
 			sx={{
 				right: '10px',
 				top: '10px',
-				zIndex: 9999,
 				backgroundColor: indigo[300],
 				width: '300px', // Match this width in the Toolbar or its children as needed
 			}}>

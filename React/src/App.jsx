@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import UserDashboard from './pages/UserDashboard';
 import UserPlaylist from './pages/UserPlaylist';
@@ -20,14 +20,44 @@ function App() {
 	const [userInfo, setUserInfo] = useState({});
 	const [currentMood, setCurrentMood] = useState([]);
 	const [deviceId, setDeviceId] = useState('');
+	const [songId, setSongId] = useState('');
+	const jwtTokenKey = 'jwtToken';
+	const getJWT = localStorage.getItem(jwtTokenKey);
+
+	const getAllPlaylist = async () => {
+		try {
+			const res = await fetch(import.meta.env.VITE_SERVER + '/playlists/get/', {
+				headers: {
+					Authorization: `Bearer ${getJWT}`,
+				},
+			});
+
+			const data = await res.json();
+
+			if (res.ok) {
+				setGetPlaylists(data);
+			} else {
+				console.log('error getting playlists');
+			}
+		} catch (error) {
+			console.log('error:', error);
+		}
+	};
+
+	useEffect(() => {
+		getAllPlaylist();
+	}, []);
 
 	return (
 		<UserContext.Provider
 			value={{
+				songId,
+				setSongId,
 				storeUsername,
 				setStoreUsername,
 				getPlaylists,
 				setGetPlaylists,
+				getAllPlaylist,
 				userInfo,
 				setUserInfo,
 				currentMood,
