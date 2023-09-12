@@ -24,11 +24,11 @@ function SpotifyPlayer(props) {
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 	const [currentTrack, setTrack] = useState({
-		name: '',
+		name: 'Unknown',
 		album: {
-			images: [{ url: '' }],
+			images: [{ url: 'defaultImageURL' }],
 		},
-		artists: [{ name: '' }],
+		artists: [{ name: 'Unknown' }],
 	});
 
 	const { pauseSong, playSong, nextSong, previousSong } = props;
@@ -99,7 +99,12 @@ function SpotifyPlayer(props) {
 				}
 				setTrack(state.track_window.current_track);
 				setPaused(state.paused);
-				setLoading(false);
+				if (
+					state.track_window.current_track &&
+					state.track_window.current_track.album
+				) {
+					setLoading(false);
+				}
 			});
 
 			player.connect();
@@ -145,23 +150,27 @@ function SpotifyPlayer(props) {
 								<CircularProgress sx={{ color: 'white' }} />
 							) : (
 								<>
-									<CardMedia
-										component='img'
-										sx={{
-											maxHeight: '4rem',
-											maxWidth: '4rem',
-											marginRight: '1rem',
-											padding: '0.5rem',
-										}}
-										image={currentTrack.album.images[0].url}
-									/>
+									{currentTrack.album && currentTrack.album.images[0] && (
+										<CardMedia
+											component='img'
+											sx={{
+												maxHeight: '4rem',
+												maxWidth: '4rem',
+												marginRight: '1rem',
+												padding: '0.5rem',
+											}}
+											image={currentTrack.album.images[0].url}
+										/>
+									)}
 									<div>
 										<Typography variant='subtitle1'>
 											{currentTrack.name}
 										</Typography>
-										<Typography variant='body2'>
-											{currentTrack.artists[0].name}
-										</Typography>
+										{currentTrack.artists[0] && (
+											<Typography variant='body2'>
+												{currentTrack.artists[0].name}
+											</Typography>
+										)}
 									</div>
 								</>
 							)}

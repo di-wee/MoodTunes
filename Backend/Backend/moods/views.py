@@ -5,7 +5,6 @@ from .models import Mood, SubMoods
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from songs.models import Songs
-from playlists.models import Playlist
 from songs.serializers import DatabaseSongSerializer
 
 

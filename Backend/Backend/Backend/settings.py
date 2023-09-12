@@ -44,7 +44,6 @@ AUTHENTICATION_BACKENDS = (
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-AUTH_USER_MODEL = 'users.CustomUser'
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,8 +1,8 @@
 from django.db import models
 import uuid
-from users.models import CustomUser
+from django.contrib.auth.models import User
 
 
 class UserTempToken(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     temp_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

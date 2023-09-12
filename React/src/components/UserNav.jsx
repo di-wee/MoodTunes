@@ -3,6 +3,7 @@ import {
 	Box,
 	Button,
 	ButtonBase,
+	CircularProgress,
 	Divider,
 	Drawer,
 	IconButton,
@@ -86,17 +87,25 @@ const UserNav = (props) => {
 					</ListItem>
 					<Divider sx={{ backgroundColor: blue[900] }} />
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
-						<Box
-							component='img'
-							src={displaypic[0].url}
-							sx={{
-								height: '70%',
-								width: '70%',
-								borderRadius: '50%',
-								borderBlockColor: 'white',
-								marginTop: '1rem',
-								marginBottom: '1rem',
-							}}></Box>
+						{displaypic && displaypic[0] ? (
+							<>
+								<Box
+									component='img'
+									src={displaypic[0].url}
+									sx={{
+										height: '70%',
+										width: '70%',
+										borderRadius: '50%',
+										borderBlockColor: 'white',
+										marginTop: '1rem',
+										marginBottom: '1rem',
+									}}></Box>
+							</>
+						) : (
+							<>
+								<CircularProgress></CircularProgress>
+							</>
+						)}
 						<Typography sx={{ color: lightBlue[900] }}>
 							Welcome back, {displayname}
 						</Typography>
