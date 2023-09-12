@@ -21,6 +21,7 @@ function App() {
 	const [currentMood, setCurrentMood] = useState([]);
 	const [deviceId, setDeviceId] = useState('');
 	const [songId, setSongId] = useState('');
+	const [isPaused, setPaused] = useState(null);
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 
@@ -64,6 +65,8 @@ function App() {
 				setCurrentMood,
 				deviceId,
 				setDeviceId,
+				isPaused,
+				setPaused,
 			}}>
 			<div style={{ backgroundColor: indigo[100] }}>
 				<main>

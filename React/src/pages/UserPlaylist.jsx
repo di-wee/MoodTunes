@@ -26,7 +26,7 @@ const UserPlaylist = () => {
 					/>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}>
-					<Tracks></Tracks>
+					<Tracks playlist={playlist}></Tracks>
 				</Box>
 			</Box>
 		</div>

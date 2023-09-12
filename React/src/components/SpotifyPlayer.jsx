@@ -13,10 +13,13 @@ import { indigo } from '@mui/material/colors';
 import { FastForward, FastRewind, PlayArrow } from '@mui/icons-material';
 import { PauseBox, PlayBox } from 'mdi-material-ui';
 
-function WebPlayback(props) {
+function SpotifyPlayer(props) {
 	const userCtx = useContext(UserContext);
-	const { setDeviceId } = userCtx;
+	const { setDeviceId, isPaused, setPaused } = userCtx;
 	const [player, setPlayer] = useState(undefined);
+	const [token, setToken] = useState('');
+	const jwtTokenKey = 'jwtToken';
+	const getJWT = localStorage.getItem(jwtTokenKey);
 	const [currentTrack, setTrack] = useState({
 		name: '',
 		album: {
@@ -24,11 +27,40 @@ function WebPlayback(props) {
 		},
 		artists: [{ name: '' }],
 	});
-	const [isPaused, setPaused] = useState(false);
-	const { token, pauseSong, playSong } = props;
+
+	const { pauseSong, playSong, nextSong, previousSong } = props;
+
+	const fetchToken = async () => {
+		try {
+			const res = await fetch(
+				import.meta.env.VITE_SERVER + '/playbacks/spotify_token/',
+				{
+					headers: {
+						Authorization: `Bearer ${getJWT}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
+			const data = await res.json();
+			if (res.ok) {
+				setToken(data.token);
+			} else {
+				console.error('Error retrieving Spotify token');
+				return null;
+			}
+		} catch (error) {
+			console.error('Fetch token error:', error);
+			return null;
+		}
+	};
 
 	useEffect(() => {
-		if (!token) return;
+		if (!token) {
+			// Token is not available yet, so exit early
+			return;
+		}
+
 		const script = document.createElement('script');
 		script.src = 'https://sdk.scdn.co/spotify-player.js';
 		script.async = true;
@@ -66,6 +98,10 @@ function WebPlayback(props) {
 
 			player.connect();
 		};
+	}, [token]);
+
+	useEffect(() => {
+		fetchToken();
 	}, []);
 
 	return (
@@ -124,7 +160,7 @@ function WebPlayback(props) {
 							style={{ marginRight: '-8px' }}
 							variant='contained'
 							color='secondary'
-							onClick={() => player.previousTrack()}>
+							onClick={() => previousSong()}>
 							<FastRewind />
 						</IconButton>
 						<IconButton
@@ -138,7 +174,7 @@ function WebPlayback(props) {
 							style={{ marginLeft: '-8px' }}
 							variant='contained'
 							color='secondary'
-							onClick={() => player.nextTrack()}>
+							onClick={() => nextSong()}>
 							<FastForward />
 						</IconButton>
 					</div>
@@ -148,4 +184,4 @@ function WebPlayback(props) {
 	);
 }
 
-export default WebPlayback;
+export default SpotifyPlayer;

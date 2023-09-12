@@ -1,14 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
+import { Box, IconButton, Pagination, Typography } from '@mui/material';
 
 import { lightBlue } from '@mui/material/colors';
-import {
-	AddCircle,
-	FastForward,
-	FastRewind,
-	PauseCircle,
-	PlayCircle,
-} from '@mui/icons-material';
+import { AddCircle, PauseCircle, PlayCircle } from '@mui/icons-material';
 import SpotifyPlayerComponent from './SpotifyPlayer';
 import UserContext from '../context/UserContext';
 import AddToPlaylistModal from './AddToPlaylistModal';
@@ -18,10 +12,8 @@ const Mood = (props) => {
 	const { mood } = props;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
-	const playerRef = useRef(null);
-	const [player, setPlayer] = useState(null);
 	const userCtx = useContext(UserContext);
-	const { deviceId, setSongId } = userCtx;
+	const { deviceId, setSongId, isPaused } = userCtx;
 	const [showModal, setShowModal] = useState(false);
 
 	// pagination logic
@@ -208,14 +200,23 @@ const Mood = (props) => {
 								<Typography>Artist: {song.artist}</Typography>
 							</Box>
 							<Box>
-								<PlayCircle
-									sx={{ cursor: 'pointer' }}
-									onClick={() => playSong(song.uri)}
-									color='primary'></PlayCircle>
-								<PauseCircle
-									sx={{ cursor: 'pointer' }}
-									onClick={() => pauseSong()}
-									color='primary'></PauseCircle>
+								<IconButton
+									style={{ margin: '0 -8px' }}
+									variant='contained'
+									color='primary'
+									onClick={() => {
+										if (isPaused === null || isPaused) {
+											playSong(song.uri);
+										} else {
+											pauseSong();
+										}
+									}}>
+									{isPaused || isPaused === null ? (
+										<PlayCircle />
+									) : (
+										<PauseCircle />
+									)}
+								</IconButton>
 								<AddCircle
 									sx={{ cursor: 'pointer' }}
 									onClick={() => handleAddToPlaylistClick(song.id)}

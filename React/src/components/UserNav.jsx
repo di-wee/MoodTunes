@@ -20,8 +20,7 @@ const UserNav = (props) => {
 	const { displaypic, displayname, mood } = props;
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
-	const { getPlaylists, setGetPlaylists, currentMood, getAllPlaylist } =
-		userCtx;
+	const { getPlaylists, currentMood, getAllPlaylist } = userCtx;
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 
@@ -35,11 +34,11 @@ const UserNav = (props) => {
 		getAllPlaylist();
 	}, []);
 
+	//setting to prop down
 	const handlePlaylistClick = (playlist) => {
 		navigate('/user/playlist', {
 			state: { playlist: playlist },
 		});
-		console.log(mood);
 	};
 
 	const deletePlaylist = async (playlistId) => {

@@ -8,6 +8,7 @@ from songs.models import Songs
 from django.core.exceptions import ObjectDoesNotExist
 import spotipy
 from allauth.socialaccount.models import SocialAccount, SocialToken
+from songs.serializers import DatabaseSongSerializer
 
 
 class CreatePlaylist(APIView):
@@ -119,3 +120,23 @@ class AddSongToPlaylist(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetSongsFromPlaylist(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, playlist_id):
+
+        try:
+            playlist = Playlist.objects.get(id=playlist_id, user=request.user)
+
+            songs = playlist.song.all()
+            serializer = DatabaseSongSerializer(songs, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Playlist.DoesNotExist:
+            return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
