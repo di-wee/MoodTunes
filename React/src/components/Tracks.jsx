@@ -1,4 +1,9 @@
-import { PauseCircle, PlayCircle, StopCircle } from '@mui/icons-material';
+import {
+	Delete,
+	PauseCircle,
+	PlayCircle,
+	StopCircle,
+} from '@mui/icons-material';
 import { Box, Button, IconButton, Pagination, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
@@ -156,7 +161,7 @@ const Tracks = (props) => {
 	const previousSong = async () => {
 		try {
 			const res = await fetch(
-				import.meta.env.VITE_SERVER + '/playbacks/previous_track/', // Update the URL according to your backend route
+				import.meta.env.VITE_SERVER + '/playbacks/previous_track/',
 				{
 					method: 'POST',
 					headers: {
@@ -177,6 +182,34 @@ const Tracks = (props) => {
 			console.log('Previous track');
 		} catch (error) {
 			console.error('Error geting previous track:', error);
+		}
+	};
+
+	const deleteSongFromPlaylist = async (songId) => {
+		try {
+			const res = await fetch(
+				import.meta.env.VITE_SERVER + `/playlists/${playlist.id}/delete_song/`,
+				{
+					method: 'DELETE',
+					headers: {
+						Authorization: `Bearer ${getJWT}`,
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						song_id: songId,
+					}),
+				}
+			);
+
+			if (!res.ok) {
+				const errorInfo = await response.json();
+				throw new Error(`Failed to delete track: ${errorInfo.message}`);
+			} else {
+				console.log('Track deleted from playlist');
+				getSongsFromPlaylist();
+			}
+		} catch (error) {
+			console.error('Error deleting song from playlist:', error);
 		}
 	};
 
@@ -281,6 +314,11 @@ const Tracks = (props) => {
 											) : (
 												<PauseCircle />
 											)}
+										</IconButton>
+										<IconButton
+											color='primary'
+											onClick={() => deleteSongFromPlaylist(song.id)}>
+											<Delete></Delete>
 										</IconButton>
 									</Box>
 								</div>

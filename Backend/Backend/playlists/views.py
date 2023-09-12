@@ -50,7 +50,7 @@ class DeletePlaylist(APIView):
         try:
             playlist = Playlist.objects.get(pk=playlist_id, user=request.user)
 
-              # getting spotify playlist id
+            # getting spotify playlist id
             spotify_playlist_id = playlist.spotify_uri.split(':')[-1]
 
             sp.current_user_unfollow_playlist(spotify_playlist_id)
@@ -62,7 +62,6 @@ class DeletePlaylist(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 class GetAllPlaylist(APIView):
@@ -124,6 +123,7 @@ class AddSongToPlaylist(APIView):
 
 class GetSongsFromPlaylist(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, playlist_id):
 
         try:
@@ -139,4 +139,35 @@ class GetSongsFromPlaylist(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DeleteSongFromPlaylist(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, playlist_id):
+        song_id = request.data.get('song_id')
+
+        user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
+        token_obj = SocialToken.objects.get(account=user_social_account)
+
+        sp = spotipy.Spotify(auth=token_obj.token)
+        try:
+            playlist = Playlist.objects.get(id=playlist_id, user=request.user)
+            song = Songs.objects.get(pk=song_id)
+
+            if song not in playlist.song.all():
+                return Response({'error': 'Song not in the playlist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            playlist.song.remove(song)
+            sp.user_playlist_remove_all_occurrences_of_tracks(user=request.user, playlist_id=playlist.spotify_uri, tracks=[song.uri])
+
+            return Response({'message': 'Song removed from the playlist.'}, status=status.HTTP_200_OK)
+        except SocialAccount.DoesNotExist:
+            return Response({'error': 'Spotify account not linked.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Playlist.DoesNotExist:
+            return Response({'error': 'Playlist does not exist or does not belong to the user.'}, status=status.HTTP_404_NOT_FOUND)
+        except Songs.DoesNotExist:
+            return Response({'error': 'Song does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+
 
