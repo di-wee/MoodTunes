@@ -29,6 +29,7 @@ const Mood = (props) => {
 	const startIndex = (page - 1) * itemsPerPage;
 	const endIndex = page * itemsPerPage;
 	const [token, setToken] = useState('');
+	const [localIsPaused, setLocalIsPaused] = useState({});
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
@@ -132,6 +133,14 @@ const Mood = (props) => {
 
 			if (res.ok) {
 				setSongs(data);
+
+				//adding song.id key and pause state value to an empty object
+				//and then setting it to state so eg. { song.id: true} as default
+				const initialPauseState = {};
+				data.forEach((song) => {
+					initialPauseState[song.id] = true;
+				});
+				setLocalIsPaused(initialPauseState);
 			} else {
 				console.log('error getting songs');
 			}
@@ -139,6 +148,16 @@ const Mood = (props) => {
 			console.log('error:', error);
 		}
 	};
+
+	//so when clicked, {song.id : true} turns tinto {song.id: false}
+	const setPauseState = (songId) => {
+		setLocalIsPaused((prevState) => ({
+			...prevState,
+			[songId]: !prevState[songId],
+		}));
+	};
+
+	useEffect(() => {}, [isPaused]);
 
 	useEffect(() => {
 		getSongsFromMood();
@@ -229,17 +248,14 @@ const Mood = (props) => {
 									variant='contained'
 									color='primary'
 									onClick={() => {
-										if (isPaused === null || isPaused) {
+										if (localIsPaused[song.id]) {
 											playSong(song.uri);
 										} else {
 											pauseSong();
 										}
+										setPauseState(song.id);
 									}}>
-									{isPaused || isPaused === null ? (
-										<PlayCircle />
-									) : (
-										<PauseCircle />
-									)}
+									{localIsPaused[song.id] ? <PlayCircle /> : <PauseCircle />}
 								</IconButton>
 								<AddCircle
 									sx={{ cursor: 'pointer' }}

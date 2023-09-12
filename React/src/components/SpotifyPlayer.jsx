@@ -18,7 +18,7 @@ import Draggable from 'react-draggable';
 function SpotifyPlayer(props) {
 	const userCtx = useContext(UserContext);
 	const { setDeviceId, isPaused, setPaused } = userCtx;
-	const [player, setPlayer] = useState(undefined);
+
 	const [token, setToken] = useState('');
 	const [isLoading, setLoading] = useState(true);
 	const jwtTokenKey = 'jwtToken';
@@ -82,9 +82,6 @@ function SpotifyPlayer(props) {
 				},
 				volume: 0.5,
 			});
-
-			//setting player to state
-			setPlayer(player);
 
 			//event listeners for when the player is 'ready'
 			player.addListener('ready', ({ device_id }) => {

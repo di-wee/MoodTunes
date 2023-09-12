@@ -24,6 +24,7 @@ const Tracks = (props) => {
 	const getJWT = localStorage.getItem(jwtTokenKey);
 	const userCtx = useContext(UserContext);
 	const { deviceId, isPaused } = userCtx;
+	const [localIsPaused, setLocalIsPaused] = useState({});
 
 	// pagination logic
 	const [page, setPage] = useState(1);
@@ -64,6 +65,11 @@ const Tracks = (props) => {
 
 			if (res.ok) {
 				setSongs(data);
+				const initialPauseState = {};
+				data.forEach((song) => {
+					initialPauseState[song.id] = true;
+				});
+				setLocalIsPaused(initialPauseState);
 			} else {
 				console.log('error getting songs from playlist');
 			}
@@ -232,6 +238,13 @@ const Tracks = (props) => {
 		}
 	};
 
+	const setPauseState = (songId) => {
+		setLocalIsPaused((prevState) => ({
+			...prevState,
+			[songId]: !prevState[songId],
+		}));
+	};
+
 	useEffect(() => {
 		getSongsFromPlaylist();
 	}, []);
@@ -331,13 +344,14 @@ const Tracks = (props) => {
 											variant='contained'
 											color='primary'
 											onClick={() => {
-												if (isPaused === null || isPaused) {
+												if (localIsPaused[song.id]) {
 													playSong(song.uri);
 												} else {
 													pauseSong();
 												}
+												setPauseState(song.id);
 											}}>
-											{isPaused || isPaused === null ? (
+											{localIsPaused[song.id] ? (
 												<PlayCircle />
 											) : (
 												<PauseCircle />
