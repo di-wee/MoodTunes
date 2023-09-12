@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Box, IconButton, Pagination, Typography } from '@mui/material';
+import {
+	Box,
+	CardMedia,
+	IconButton,
+	Pagination,
+	Typography,
+} from '@mui/material';
 
 import { lightBlue } from '@mui/material/colors';
 import { AddCircle, PauseCircle, PlayCircle } from '@mui/icons-material';
@@ -195,9 +201,27 @@ const Mood = (props) => {
 								marginBottom: '10px',
 								justifyContent: 'space-between',
 							}}>
-							<Box sx={{ marginRight: '1rem' }}>
-								<Typography>Song: {song.name}</Typography>
-								<Typography>Artist: {song.artist}</Typography>
+							<Box
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									marginRight: '1rem',
+								}}>
+								<CardMedia
+									component='img'
+									sx={{
+										maxHeight: '4rem',
+										maxWidth: '4rem',
+										marginRight: '1rem',
+										padding: '0.5rem',
+									}}
+									image={song.album_art}
+								/>
+
+								<Box sx={{ marginRight: '1rem' }}>
+									<Typography>Song: {song.name}</Typography>
+									<Typography>Artist: {song.artist}</Typography>
+								</Box>
 							</Box>
 							<Box>
 								<IconButton

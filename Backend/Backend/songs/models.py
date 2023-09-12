@@ -9,6 +9,7 @@ class Songs(models.Model):
     name = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     uri = models.CharField(max_length=255)
+    album_art = models.URLField()
 
     def __str__(self):
         return self.name

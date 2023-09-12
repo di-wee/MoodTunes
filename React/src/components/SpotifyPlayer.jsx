@@ -8,6 +8,7 @@ import {
 	Typography,
 	Grid,
 	IconButton,
+	CircularProgress,
 } from '@mui/material';
 import { indigo } from '@mui/material/colors';
 import { FastForward, FastRewind, PlayArrow } from '@mui/icons-material';
@@ -18,6 +19,7 @@ function SpotifyPlayer(props) {
 	const { setDeviceId, isPaused, setPaused } = userCtx;
 	const [player, setPlayer] = useState(undefined);
 	const [token, setToken] = useState('');
+	const [isLoading, setLoading] = useState(true);
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
 	const [currentTrack, setTrack] = useState({
@@ -94,6 +96,7 @@ function SpotifyPlayer(props) {
 				}
 				setTrack(state.track_window.current_track);
 				setPaused(state.paused);
+				setLoading(false);
 			});
 
 			player.connect();
@@ -133,22 +136,30 @@ function SpotifyPlayer(props) {
 							alignItems: 'center',
 							justifyContent: 'center',
 						}}>
-						<CardMedia
-							component='img'
-							sx={{
-								maxHeight: '4rem',
-								maxWidth: '4rem',
-								marginRight: '1rem',
-								padding: '0.5rem',
-							}}
-							image={currentTrack.album.images[0].url}
-						/>
-						<div>
-							<Typography variant='subtitle1'>{currentTrack.name}</Typography>
-							<Typography variant='body2'>
-								{currentTrack.artists[0].name}
-							</Typography>
-						</div>
+						{isLoading ? ( // Display CircularProgress if isLoading is true
+							<CircularProgress sx={{ color: 'white' }} />
+						) : (
+							<>
+								<CardMedia
+									component='img'
+									sx={{
+										maxHeight: '4rem',
+										maxWidth: '4rem',
+										marginRight: '1rem',
+										padding: '0.5rem',
+									}}
+									image={currentTrack.album.images[0].url}
+								/>
+								<div>
+									<Typography variant='subtitle1'>
+										{currentTrack.name}
+									</Typography>
+									<Typography variant='body2'>
+										{currentTrack.artists[0].name}
+									</Typography>
+								</div>
+							</>
+						)}
 					</div>
 
 					<div

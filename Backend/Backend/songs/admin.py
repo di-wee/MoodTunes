@@ -44,6 +44,11 @@ class SongsAdmin(admin.ModelAdmin):
             for track, audio_features in combined_track_audio_features:
                 mood_name = determine_mood(audio_features['valence'], audio_features['energy'],
                                            audio_features['danceability'])
+
+                album_images = track['album']['images'] if 'images' in track['album'] else []
+
+
+                album_image_url = album_images[0]['url'] if album_images else None
                 try:
                     song_to_mood = Mood.objects.get(name=mood_name)
                 except ObjectDoesNotExist:
@@ -57,6 +62,8 @@ class SongsAdmin(admin.ModelAdmin):
                         'artist': track['artists'][0]['name'],
                         'mood': song_to_mood,
                         'uri': track['uri'],
+                        'album_art': album_image_url,
+
                     }
                 )
                 song_data = {
@@ -67,6 +74,7 @@ class SongsAdmin(admin.ModelAdmin):
                     'energy': audio_features['energy'],
                     'danceability': audio_features['danceability'],
                     'uri': track['uri'],
+                    'album_art': album_image_url,
                 }
                 tracks.append(song_data)
 

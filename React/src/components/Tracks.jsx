@@ -4,7 +4,14 @@ import {
 	PlayCircle,
 	StopCircle,
 } from '@mui/icons-material';
-import { Box, Button, IconButton, Pagination, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	CardMedia,
+	IconButton,
+	Pagination,
+	Typography,
+} from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
 import { indigo, lightBlue } from '@mui/material/colors';
@@ -27,6 +34,18 @@ const Tracks = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
+	};
+
+	const handlePlaylistClick = async () => {
+		try {
+			if (isPaused === null || isPaused) {
+				await playSongFromPlaylist(playlist.spotify_uri);
+			} else {
+				await pauseSong();
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	};
 
 	const getSongsFromPlaylist = async () => {
@@ -249,13 +268,7 @@ const Tracks = (props) => {
 					startIcon={
 						isPaused || isPaused === null ? <PlayCircle /> : <StopCircle />
 					}
-					onClick={() => {
-						if (isPaused === null || isPaused) {
-							playSongFromPlaylist(playlist.spotify_uri);
-						} else {
-							pauseSong();
-						}
-					}}
+					onClick={handlePlaylistClick}
 					variant='contained'
 					sx={{
 						display: 'relative',
@@ -289,12 +302,27 @@ const Tracks = (props) => {
 										marginBottom: '10px',
 										justifyContent: 'space-between',
 									}}>
-									<Box sx={{ marginRight: '1rem' }}>
-										<Typography>Song: {song.name}</Typography>
-										<Typography>Artist: {song.artist}</Typography>
-										<Button onClick={() => console.log(isPaused)}>
-											Test Me
-										</Button>
+									<Box
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											marginRight: '1rem',
+										}}>
+										<CardMedia
+											component='img'
+											sx={{
+												maxHeight: '4rem',
+												maxWidth: '4rem',
+												marginRight: '1rem',
+												padding: '0.5rem',
+											}}
+											image={song.album_art}
+										/>
+
+										<Box sx={{ marginRight: '1rem' }}>
+											<Typography>Song: {song.name}</Typography>
+											<Typography>Artist: {song.artist}</Typography>
+										</Box>
 									</Box>
 
 									<Box>

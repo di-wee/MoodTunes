@@ -5,7 +5,7 @@ from .models import Mood, SubMoods
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from songs.models import Songs
-
+from playlists.models import Playlist
 from songs.serializers import DatabaseSongSerializer
 
 
@@ -20,16 +20,12 @@ class CreateMoods(APIView):
     permission_classes = [IsAdminUser]
 
     def post(self, request):
-
-        # de-serializing JSON into data for python
-        serializer = MoodSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Unable to create mood.'}, status=status.HTTP_400_BAD_REQUEST)
-
+        name = request.data.get('name')
+        try:
+            mood = Mood.objects.create(name=name)
+            return Response({'message': 'Mood created successfully.'}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class GetSubMoods(APIView):
     def get(self, request, mood_id=None):

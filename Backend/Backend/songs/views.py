@@ -49,24 +49,27 @@ class SpotifySongSearch(APIView):
         # to search for track to get ID that will allow me to access track audio features
 
         results = sp.search(q=track, limit=10)
-        print(f"Number of tracks returned from Spotify search: {len(results['tracks']['items'])}")
+
 
         # one api call to get audio features
         track_ids = [track['id'] for track in results['tracks']['items']]
         audio_features_list = sp.audio_features(track_ids)
-        print(f"Number of audio features returned: {len(audio_features_list)}")
+
 
         tracks = []
 
         combined_track_audio_features = zip(results['tracks']['items'], audio_features_list)
-        print(combined_track_audio_features)
+
         for track, audio_features in combined_track_audio_features:
-            print(f"Processing track: {track['name']} by {track['artists'][0]['name']}")
-            print("Valence:", audio_features['valence'])
-            print("Energy:", audio_features['energy'])
-            print("Danceability:", audio_features['danceability'])
+
             mood_name = determine_mood(audio_features['valence'], audio_features['energy'],
                                        audio_features['danceability'])
+
+            # fetching album details
+            album_images = track['album']['images'] if 'images' in track['album'] else []
+
+
+            album_image_url = album_images[0]['url'] if album_images else None
 
             try:
                 # retrieving mood of song
@@ -87,6 +90,7 @@ class SpotifySongSearch(APIView):
                     'artist': track['artists'][0]['name'],
                     'mood': song_to_mood,
                     'uri': track['uri'],  # for playback
+                    'album_art': album_image_url,
                 }
             )
 
@@ -98,6 +102,8 @@ class SpotifySongSearch(APIView):
                 'energy': audio_features['energy'],
                 'danceability': audio_features['danceability'],
                 'uri': track['uri'],
+                'album_art': album_image_url,
+
             }
             tracks.append(song_data)
             print(f"Number of tracks successfully processed: {len(tracks)}")
