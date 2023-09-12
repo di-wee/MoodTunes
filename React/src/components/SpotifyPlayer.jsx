@@ -60,28 +60,33 @@ function SpotifyPlayer(props) {
 
 	useEffect(() => {
 		if (!token) {
-			// Token is not available yet, so exit early
 			return;
 		}
 
+		// getting player script from spotify; regular DOM
 		const script = document.createElement('script');
 		script.src = 'https://sdk.scdn.co/spotify-player.js';
 		script.async = true;
 
+		// appending it to html body
 		document.body.appendChild(script);
 
 		window.onSpotifyWebPlaybackSDKReady = () => {
-			console.log(token);
+			//creating the spotify player thru a class
 			const player = new window.Spotify.Player({
 				name: 'MoodPlayer',
+
+				//callback function to call the spotify access token
 				getOAuthToken: (cb) => {
 					cb(token);
 				},
 				volume: 0.5,
 			});
 
+			//setting player to state
 			setPlayer(player);
 
+			//event listeners for when the player is 'ready'
 			player.addListener('ready', ({ device_id }) => {
 				console.log('Ready with Device ID', device_id);
 				setDeviceId(device_id);
@@ -124,14 +129,14 @@ function SpotifyPlayer(props) {
 						justifyContent: 'center',
 						paddingLeft: '5%',
 						paddingRight: '5%',
-						width: '100%', // Take up all available space within the AppBar
+						width: '100%',
 					}}>
 					<div
 						style={{
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'space-between', // Adjust this to put the content into positions you'd prefer
-							width: '100%', // Take up all available space within the Toolbar
+							justifyContent: 'space-between',
+							width: '100%',
 						}}>
 						<div
 							style={{
@@ -139,7 +144,7 @@ function SpotifyPlayer(props) {
 								alignItems: 'center',
 								justifyContent: 'center',
 							}}>
-							{isLoading ? ( // Display CircularProgress if isLoading is true
+							{isLoading ? (
 								<CircularProgress sx={{ color: 'white' }} />
 							) : (
 								<>

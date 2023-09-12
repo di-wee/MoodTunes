@@ -16,7 +16,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
 import { indigo, lightBlue } from '@mui/material/colors';
 import SpotifyPlayer from './SpotifyPlayer';
-import Draggable from 'react-draggable';
 
 const Tracks = (props) => {
 	const { playlist } = props;
@@ -75,7 +74,7 @@ const Tracks = (props) => {
 
 	const playSong = async (uri) => {
 		try {
-			const response = await fetch(
+			const res = await fetch(
 				import.meta.env.VITE_SERVER + '/playbacks/play/',
 				{
 					method: 'POST',
@@ -90,7 +89,7 @@ const Tracks = (props) => {
 				}
 			);
 
-			if (!response.ok) {
+			if (!res.ok) {
 				const errorInfo = await response.json();
 				throw new Error(`Failed to play song: ${errorInfo.message}`);
 			}
@@ -126,7 +125,7 @@ const Tracks = (props) => {
 	};
 	const pauseSong = async () => {
 		try {
-			const response = await fetch(
+			const res = await fetch(
 				import.meta.env.VITE_SERVER + '/playbacks/pause/', // Update the URL according to your backend route
 				{
 					method: 'POST',
@@ -140,7 +139,7 @@ const Tracks = (props) => {
 				}
 			);
 
-			if (!response.ok) {
+			if (!res.ok) {
 				const errorInfo = await response.json();
 				throw new Error(`Failed to pause playback: ${errorInfo.message}`);
 			}

@@ -15,9 +15,11 @@ import PlaylistCreationModal from './PlaylistCreationModal';
 import UserContext from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Delete } from '@mui/icons-material';
+import DeleteWarningModal from './DeleteWarningModal';
 
 const UserNav = (props) => {
 	const { displaypic, displayname, mood } = props;
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
 	const { getPlaylists, currentMood, getAllPlaylist } = userCtx;
@@ -138,10 +140,18 @@ const UserNav = (props) => {
 											{playlist.name}
 										</Typography>
 									</ButtonBase>
-									<IconButton onClick={() => deletePlaylist(playlist.id)}>
+									<IconButton onClick={() => setShowDeleteModal(true)}>
 										<Delete></Delete>
 									</IconButton>
 								</Box>
+								{showDeleteModal && (
+									<DeleteWarningModal
+										deletePlaylist={deletePlaylist}
+										playlistId={playlist.id}
+										showDeleteModal={showDeleteModal}
+										setShowDeleteModal={setShowDeleteModal}
+										playlistName={playlist.name}></DeleteWarningModal>
+								)}
 							</>
 						))}
 					</ListItem>

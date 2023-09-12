@@ -23,7 +23,6 @@ const Login = () => {
 		}
 		window.location.href =
 			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
-		console.log(storeUsername);
 	};
 
 	return (

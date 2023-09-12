@@ -1,14 +1,13 @@
 import {
 	Box,
 	Button,
-	CircularProgress,
 	Dialog,
 	DialogContent,
 	DialogTitle,
 	Typography,
 } from '@mui/material';
-import { blue, lightBlue } from '@mui/material/colors';
-import React, { useState, useContext } from 'react';
+import { lightBlue } from '@mui/material/colors';
+import React, { useContext } from 'react';
 import UserContext from '../context/UserContext';
 import { AddCircle } from '@mui/icons-material';
 
