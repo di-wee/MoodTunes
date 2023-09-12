@@ -13,6 +13,7 @@ import {
 import { indigo } from '@mui/material/colors';
 import { FastForward, FastRewind, PlayArrow } from '@mui/icons-material';
 import { PauseBox, PlayBox } from 'mdi-material-ui';
+import Draggable from 'react-draggable';
 
 function SpotifyPlayer(props) {
 	const userCtx = useContext(UserContext);
@@ -108,90 +109,93 @@ function SpotifyPlayer(props) {
 	}, []);
 
 	return (
-		<AppBar
-			position='absolute'
-			sx={{
-				right: '10px',
-				top: '10px',
-				backgroundColor: indigo[300],
-				width: '300px', // Match this width in the Toolbar or its children as needed
-			}}>
-			<Toolbar
+		<Draggable>
+			<AppBar
+				position='absolute'
 				sx={{
-					justifyContent: 'center',
-					paddingLeft: '5%',
-					paddingRight: '5%',
-					width: '100%', // Take up all available space within the AppBar
+					right: '10px',
+					top: '10px',
+					backgroundColor: indigo[300],
+					width: '300px',
+					cursor: 'move',
 				}}>
-				<div
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'space-between', // Adjust this to put the content into positions you'd prefer
-						width: '100%', // Take up all available space within the Toolbar
+				<Toolbar
+					sx={{
+						justifyContent: 'center',
+						paddingLeft: '5%',
+						paddingRight: '5%',
+						width: '100%', // Take up all available space within the AppBar
 					}}>
 					<div
 						style={{
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'center',
+							justifyContent: 'space-between', // Adjust this to put the content into positions you'd prefer
+							width: '100%', // Take up all available space within the Toolbar
 						}}>
-						{isLoading ? ( // Display CircularProgress if isLoading is true
-							<CircularProgress sx={{ color: 'white' }} />
-						) : (
-							<>
-								<CardMedia
-									component='img'
-									sx={{
-										maxHeight: '4rem',
-										maxWidth: '4rem',
-										marginRight: '1rem',
-										padding: '0.5rem',
-									}}
-									image={currentTrack.album.images[0].url}
-								/>
-								<div>
-									<Typography variant='subtitle1'>
-										{currentTrack.name}
-									</Typography>
-									<Typography variant='body2'>
-										{currentTrack.artists[0].name}
-									</Typography>
-								</div>
-							</>
-						)}
-					</div>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}>
+							{isLoading ? ( // Display CircularProgress if isLoading is true
+								<CircularProgress sx={{ color: 'white' }} />
+							) : (
+								<>
+									<CardMedia
+										component='img'
+										sx={{
+											maxHeight: '4rem',
+											maxWidth: '4rem',
+											marginRight: '1rem',
+											padding: '0.5rem',
+										}}
+										image={currentTrack.album.images[0].url}
+									/>
+									<div>
+										<Typography variant='subtitle1'>
+											{currentTrack.name}
+										</Typography>
+										<Typography variant='body2'>
+											{currentTrack.artists[0].name}
+										</Typography>
+									</div>
+								</>
+							)}
+						</div>
 
-					<div
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-						}}>
-						<IconButton
-							style={{ marginRight: '-8px' }}
-							variant='contained'
-							color='secondary'
-							onClick={() => previousSong()}>
-							<FastRewind />
-						</IconButton>
-						<IconButton
-							style={{ margin: '0 -8px' }}
-							variant='contained'
-							color='secondary'
-							onClick={() => (isPaused ? playSong() : pauseSong())}>
-							{isPaused ? <PlayBox /> : <PauseBox />}
-						</IconButton>
-						<IconButton
-							style={{ marginLeft: '-8px' }}
-							variant='contained'
-							color='secondary'
-							onClick={() => nextSong()}>
-							<FastForward />
-						</IconButton>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+							}}>
+							<IconButton
+								style={{ marginRight: '-8px' }}
+								variant='contained'
+								color='secondary'
+								onClick={() => previousSong()}>
+								<FastRewind />
+							</IconButton>
+							<IconButton
+								style={{ margin: '0 -8px' }}
+								variant='contained'
+								color='secondary'
+								onClick={() => (isPaused ? playSong() : pauseSong())}>
+								{isPaused ? <PlayBox /> : <PauseBox />}
+							</IconButton>
+							<IconButton
+								style={{ marginLeft: '-8px' }}
+								variant='contained'
+								color='secondary'
+								onClick={() => nextSong()}>
+								<FastForward />
+							</IconButton>
+						</div>
 					</div>
-				</div>
-			</Toolbar>
-		</AppBar>
+				</Toolbar>
+			</AppBar>
+		</Draggable>
 	);
 }
 

@@ -16,6 +16,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
 import { indigo, lightBlue } from '@mui/material/colors';
 import SpotifyPlayer from './SpotifyPlayer';
+import Draggable from 'react-draggable';
 
 const Tracks = (props) => {
 	const { playlist } = props;
@@ -365,6 +366,7 @@ const Tracks = (props) => {
 					page={page}
 					onChange={handlePageChange}></Pagination>
 			</Box>
+
 			<SpotifyPlayer
 				pauseSong={pauseSong}
 				playSong={playSong}
