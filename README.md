@@ -8,7 +8,6 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
-- [Website Wireframe](#website-wireframe)
 - [Screenshots](#screenshots)
 - [API Endpoints](#api-endpoints)
 - [Data Model](#data-model)
@@ -33,8 +32,58 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 - On-Site Playback: Users can listen to their playlists directly through MoodTunes' built-in player.
 - Spotify Playback: Alternatively, the playlists are fully accessible and can be played directly from the Spotify app.
 
-## Playlist Syncing
+### Playlist Syncing
 - Two-Way Sync: Any changes made to your playlists—whether songs are added or removed—are reflected in real-time both on MoodTunes and your Spotify account.
+
+## Tech Stack
+- Frontend: React.js
+- Component Library: Material UI (MUI)
+- Backend: Python, Django
+- Database: PostgreSQL
+- 3rd Party API: Spotify API
+
+## API Endpoints
+The MoodTunes API offers various endpoints for managing users, moods, songs, playlists, playbacks, and temporary tokens.
+
+### Base URL
+
+#### User Management
+- Get User Details: GET /users/
+  
+#### Mood Management
+- Get All Moods: GET /moods/
+- Get Songs from a Mood: GET /moods/get_songs/<str:mood>
+
+#### Song Management
+- Spotify Search: GET /songs/admin/search/
+
+#### Playlist Management
+- Create Playlist: POST /playlists/create_playlist/
+- Get All Playlists: GET /playlists/get/
+- Get Single Playlist: GET /playlists/get/<int:playlist_id>/
+- Add Song to Playlist: POST /playlists/<int:playlist_id>/add_song/
+- Delete Playlist: DELETE /playlists/delete/<int:playlist_id>/
+- Get Songs from Playlist: GET /playlists/<int:playlist_id>/get_songs/
+- Delete Song from Playlist: DELETE /playlists/<int:playlist_id>/delete_song/
+
+#### Playback Management
+- Play Track: POST /playbacks/play/
+- Play Songs from Playlist: POST /playbacks/play_playlist/
+- Pause: POST /playbacks/pause/
+- Previous Track: POST /playbacks/previous_track/
+- Next Track: POST /playbacks/next_track/
+- Get Spotify Token: GET /playbacks/spotify_token/
+
+#### Temporary Token Management
+- Exchange Temp Token for JWT: GET /temp_tokens/get_jwt/
+- Get Temp Code by Identifier: GET /temp_tokens/get_temp_code/
+
+#### Accounts
+- Allauth URLs: GET, POST /accounts/
+
+#### Admin
+- Admin Panel: GET /admin/
+
 
 
 ## Data Model
