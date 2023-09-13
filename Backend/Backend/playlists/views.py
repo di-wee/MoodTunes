@@ -177,7 +177,7 @@ class EditPlaylistName(APIView):
 
     def patch(self, request, playlist_id):
         try:
-            playlist: Playlist.objects.get(id=playlist_id, user=request.user)
+            playlist = Playlist.objects.get(id=playlist_id, user=request.user)
             new_name = request.data.get('name')
             if new_name is None:
                 return Response({"error": "New name not provided"}, status=status.HTTP_400_BAD_REQUEST)

@@ -15,11 +15,13 @@ import { blue, lightBlue } from '@mui/material/colors';
 import PlaylistCreationModal from './PlaylistCreationModal';
 import UserContext from '../context/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Delete } from '@mui/icons-material';
+import { Delete, Edit } from '@mui/icons-material';
 import DeleteWarningModal from './DeleteWarningModal';
+import EditPlaylistModal from './EditPlaylistModal';
 
 const UserNav = (props) => {
 	const { displaypic, displayname, mood } = props;
+	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
@@ -158,6 +160,9 @@ const UserNav = (props) => {
 									<IconButton onClick={() => setShowDeleteModal(true)}>
 										<Delete></Delete>
 									</IconButton>
+									<IconButton onClick={() => setShowEditModal(true)}>
+										<Edit></Edit>
+									</IconButton>
 								</Box>
 								{showDeleteModal && (
 									<DeleteWarningModal
@@ -166,6 +171,15 @@ const UserNav = (props) => {
 										showDeleteModal={showDeleteModal}
 										setShowDeleteModal={setShowDeleteModal}
 										playlistName={playlist.name}></DeleteWarningModal>
+								)}
+
+								{showEditModal && (
+									<EditPlaylistModal
+										playlistId={playlist.id}
+										showEditModal={showEditModal}
+										setShowEditModal={setShowEditModal}
+										playlistName={playlist.name}
+										getAllPlaylist={getAllPlaylist}></EditPlaylistModal>
 								)}
 							</>
 						))}
