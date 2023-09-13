@@ -15,4 +15,4 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 - [Next Steps](#next-steps)
 
 # Data Model
-<img width="1279" alt="Screenshot 2023-09-13 at 11 08 47 AM" src="https://github.com/di-wee/MoodTunes/assets/135717295/39daa488-7d1b-4547-a9c2-7d33037dd018">
+<img width="1279" alt="Screenshot 2023-09-13 at 11 08 47 AM" src="https://github.com/di-wee/MoodTunes/assets/135717295/c07b4b80-767c-4b7e-93b4-cb50cc59962b">
