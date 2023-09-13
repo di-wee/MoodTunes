@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import UserContext from '../context/UserContext';
 import {
-	Button,
 	AppBar,
 	Toolbar,
 	CardMedia,
 	Typography,
-	Grid,
 	IconButton,
 	CircularProgress,
 } from '@mui/material';
@@ -114,7 +112,7 @@ function SpotifyPlayer(props) {
 
 	useEffect(() => {
 		return () => {
-			// clean up logic when user goes to another component; to disconnect player
+			// clean up logic when user goes to another component or unmount; to disconnect player
 			if (playerRef.current) {
 				playerRef.current.disconnect();
 			}

@@ -1,6 +1,8 @@
+<!--this template is extending from the default admin template-->
 {% extends "admin/change_list.html" %}
 {% load i18n %}
 
+<!--overriding the inbuilt 'search' from the og template with my own custom one-->
 {% block search %} 
     <div id="toolbar">
         <form method="get">
@@ -9,34 +11,17 @@
         </form>
     </div>
 {% endblock %}
+
+<!--overriding the results from the search-->
 {% block result_list %}
-<!--checking if searched songs alrd exists in database-->
-    {% if searched_songs %}
-        <table>
-        <tr>
-            <th>Track ID</th>
-            <th>Name</th>
-            <th>Artist</th>
-            <th>Valence</th>
-            <th>Energy</th>
-            <th>Danceability</th>
-            <th>URI</th>
-        </tr>
-        {% for song in searched_songs %}
-        <tr>
-            <td>{{ song.id }}</td>
-            <td>{{ song.name }}</td>
-            <td>{{ song.artist }}</td>
-            <td>{{ song.valence }}</td>
-            <td>{{ song.energy }}</td>
-            <td>{{ song.danceability }}</td>
-            <td>{{ song.uri }}</td>
-        </tr>
-        {% endfor %}
-        </table>
-    {% elif error %}
+
+    {% if error %}
         <p>{{ error }}</p>
     {% else %}
+
+<!--original template of the adminsite-->
         {{ block.super }}
     {% endif %}
 {% endblock %}
+
+

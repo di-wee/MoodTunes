@@ -3,7 +3,7 @@ import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
 import { Box, CircularProgress, Container, Paper } from '@mui/material';
 import UserContext from '../context/UserContext';
-import { blue, indigo, lightBlue, pink } from '@mui/material/colors';
+import { indigo, lightBlue } from '@mui/material/colors';
 
 const UserDashboard = () => {
 	const userCtx = useContext(UserContext);
@@ -123,16 +123,17 @@ const UserDashboard = () => {
 							display: 'flex',
 							flexDirection: 'row',
 							backgroundColor: indigo[200],
-							borderRadius: '20px', // Increased to make it look more dreamy
+							borderRadius: '20px',
 						}}>
 						<Box
 							sx={{
 								width: 240,
-								backgroundColor: lightBlue[100], // Pastel lavender
-								borderRadius: '20px', // Dreamy rounded corners
+								backgroundColor: lightBlue[100],
+								borderRadius: '20px',
 								padding: '1rem',
-								marginRight: '1rem',
-								margin: '2rem',
+								marginLeft: '-2rem',
+
+								marginTop: '2rem',
 							}}>
 							<UserNav
 								displayname={userInfo.display_name}
@@ -142,10 +143,10 @@ const UserDashboard = () => {
 						<Box
 							sx={{
 								flexGrow: 1,
-								backgroundColor: indigo[50], // Pastel green
+								backgroundColor: indigo[50],
 								padding: '1rem',
 								borderRadius: '20px',
-								margin: '2rem', // Dreamy rounded corners
+								margin: '2rem',
 							}}>
 							<UserDisplay />
 						</Box>

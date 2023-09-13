@@ -9,4 +9,5 @@ urlpatterns = [
     path('delete/<int:playlist_id>/', views.DeletePlaylist.as_view(), name='delete-playlist'),
     path('<int:playlist_id>/get_songs/', views.GetSongsFromPlaylist.as_view(), name='get-songs-from-playlist'),
     path('<int:playlist_id>/delete_song/', views.DeleteSongFromPlaylist.as_view(), name='delete-song-from-playlist'),
+    path('<int:playlist_id>/update/', views.EditPlaylistName.as_view(), name='edit-playlist-name')
 ]

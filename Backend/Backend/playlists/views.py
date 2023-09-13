@@ -159,15 +159,33 @@ class DeleteSongFromPlaylist(APIView):
                 return Response({'error': 'Song not in the playlist.'}, status=status.HTTP_400_BAD_REQUEST)
 
             playlist.song.remove(song)
-            sp.user_playlist_remove_all_occurrences_of_tracks(user=request.user, playlist_id=playlist.spotify_uri, tracks=[song.uri])
+            sp.user_playlist_remove_all_occurrences_of_tracks(user=request.user, playlist_id=playlist.spotify_uri,
+                                                              tracks=[song.uri])
 
             return Response({'message': 'Song removed from the playlist.'}, status=status.HTTP_200_OK)
         except SocialAccount.DoesNotExist:
             return Response({'error': 'Spotify account not linked.'}, status=status.HTTP_400_BAD_REQUEST)
         except Playlist.DoesNotExist:
-            return Response({'error': 'Playlist does not exist or does not belong to the user.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Playlist does not exist or does not belong to the user.'},
+                            status=status.HTTP_404_NOT_FOUND)
         except Songs.DoesNotExist:
             return Response({'error': 'Song does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
 
+class EditPlaylistName(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def patch(self, request, playlist_id):
+        try:
+            playlist: Playlist.objects.get(id=playlist_id, user=request.user)
+            new_name = request.data.get('name')
+            if new_name is None:
+                return Response({"error": "New name not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            playlist.name = new_name
+            playlist.save()
+            return Response({"message": "Playlist name updated successfully"}, status=status.HTTP_200_OK)
+
+        except Playlist.DoesNotExist:
+            return Response({"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
