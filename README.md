@@ -42,47 +42,37 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 - Database: PostgreSQL
 - 3rd Party API: Spotify API
 
+## Installation 
+
+
+## Screenshots
+
+
 ## API Endpoints
 The MoodTunes API offers various endpoints for managing users, moods, songs, playlists, playbacks, and temporary tokens.
 
-### Base URL
+| Method  | Endpoint                              | Description                                       |
+| ------- | ------------------------------------- | ------------------------------------------------- |
+| GET     | `/users/`                             | Get User Details                                  |
+| GET     | `/moods/`                             | Get All Moods                                     |
+| GET     | `/moods/get_songs/<str:mood>`         | Get Songs from a Mood                             |
+| GET     | `/songs/admin/search/`                | Spotify Search                                    |
+| POST    | `/playlists/create_playlist/`         | Create Playlist                                   |
+| GET     | `/playlists/get/`                     | Get All Playlists                                 |
+| GET     | `/playlists/get/<int:playlist_id>/`   | Get Single Playlist                               |
+| POST    | `/playlists/<int:playlist_id>/add_song/`| Add Song to Playlist                             |
+| DELETE  | `/playlists/delete/<int:playlist_id>/`| Delete Playlist                                   |
+| GET     | `/playlists/<int:playlist_id>/get_songs/`| Get Songs from Playlist                         |
+| DELETE  | `/playlists/<int:playlist_id>/delete_song/`| Delete Song from Playlist                      |
+| POST    | `/playbacks/play/`                    | Play Track                                        |
+| POST    | `/playbacks/play_playlist/`           | Play Songs from Playlist                          |
+| POST    | `/playbacks/pause/`                   | Pause                                             |
+| POST    | `/playbacks/previous_track/`          | Previous Track                                    |
+| POST    | `/playbacks/next_track/`              | Next Track                                        |
+| GET     | `/playbacks/spotify_token/`           | Get Spotify Token                                 |
+| GET     | `/temp_tokens/get_jwt/`               | Exchange Temp Token for JWT                       |
+| GET     | `/temp_tokens/get_temp_code/`         | Get Temp Code by Identifier                       |
 
-#### User Management
-- Get User Details: GET /users/
-  
-#### Mood Management
-- Get All Moods: GET /moods/
-- Get Songs from a Mood: GET /moods/get_songs/<str:mood>
-
-#### Song Management
-- Spotify Search: GET /songs/admin/search/
-
-#### Playlist Management
-- Create Playlist: POST /playlists/create_playlist/
-- Get All Playlists: GET /playlists/get/
-- Get Single Playlist: GET /playlists/get/<int:playlist_id>/
-- Add Song to Playlist: POST /playlists/<int:playlist_id>/add_song/
-- Delete Playlist: DELETE /playlists/delete/<int:playlist_id>/
-- Get Songs from Playlist: GET /playlists/<int:playlist_id>/get_songs/
-- Delete Song from Playlist: DELETE /playlists/<int:playlist_id>/delete_song/
-
-#### Playback Management
-- Play Track: POST /playbacks/play/
-- Play Songs from Playlist: POST /playbacks/play_playlist/
-- Pause: POST /playbacks/pause/
-- Previous Track: POST /playbacks/previous_track/
-- Next Track: POST /playbacks/next_track/
-- Get Spotify Token: GET /playbacks/spotify_token/
-
-#### Temporary Token Management
-- Exchange Temp Token for JWT: GET /temp_tokens/get_jwt/
-- Get Temp Code by Identifier: GET /temp_tokens/get_temp_code/
-
-#### Accounts
-- Allauth URLs: GET, POST /accounts/
-
-#### Admin
-- Admin Panel: GET /admin/
 
 
 
