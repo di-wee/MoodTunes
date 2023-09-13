@@ -5,7 +5,6 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 
 ## Table of Contents
 
-- [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
