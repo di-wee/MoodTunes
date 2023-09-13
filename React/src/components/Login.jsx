@@ -1,9 +1,8 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { blue, indigo } from '@mui/material/colors';
 import React, { useContext, useEffect } from 'react';
 import { Spotify } from 'mdi-material-ui';
-import { LoginOutlined } from '@mui/icons-material';
 import UserContext from '../context/UserContext';
+import { blue } from '@mui/material/colors';
 
 const Login = () => {
 	const UserCtx = useContext(UserContext);
@@ -19,7 +18,7 @@ const Login = () => {
 
 	const LoginWithSpotify = () => {
 		if (!storeUsername) {
-			return alert('Please enter your spotify username.');
+			return alert('Please enter your Spotify username.');
 		}
 		window.location.href =
 			import.meta.env.VITE_SERVER + '/accounts/spotify/login';
@@ -29,6 +28,8 @@ const Login = () => {
 		<div
 			style={{
 				height: '100vh',
+				backgroundImage: "url('/pastel_bg.png')",
+				backgroundSize: 'cover',
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
@@ -37,31 +38,11 @@ const Login = () => {
 			<Container maxWidth='xs'>
 				<Box
 					sx={{
-						bgcolor: blue[100],
-						height: '11vh',
-						width: '40%',
-						borderRadius: '8%',
-						opacity: '85%',
-						position: 'relative',
-						left: '30%',
-						zIndex: 1,
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}>
-					<Typography
-						sx={{ color: indigo[800] }}
-						variant='h5'>
-						LOG IN
-					</Typography>
-				</Box>
-				<Box
-					sx={{
-						bgcolor: indigo[600],
-						height: '35vh',
-						width: '100%',
+						bgcolor: '#AEDFF7',
+						height: '49vh',
+						width: '90%',
 						borderRadius: '10%',
-						opacity: '85%',
+						opacity: '90%',
 						position: 'relative',
 						display: 'flex',
 						flexDirection: 'column',
@@ -69,8 +50,21 @@ const Login = () => {
 						alignItems: 'center',
 					}}>
 					<Typography
+						sx={{
+							color: '#457B9D',
+							marginBottom: '2rem',
+							backgroundColor: blue[50],
+							borderRadius: '8%',
+							padding: '1rem',
+							width: '60%',
+							textAlign: 'center',
+						}}
+						variant='h5'>
+						LOG IN
+					</Typography>
+					<Typography
 						variant='h5'
-						sx={{ color: blue[50], marginBottom: '1rem' }}>
+						sx={{ color: '#1D3557', marginBottom: '2rem' }}>
 						Welcome Back!
 					</Typography>
 					<TextField
@@ -83,10 +77,7 @@ const Login = () => {
 						sx={{
 							marginBottom: '1rem',
 							width: '60%',
-							backgroundColor: 'rgba(255, 255, 255, 0.5)', // 70% opaque white background
-							'& .MuiFilledInput-root': {
-								background: 'rgba(255, 255, 255, 0.7)',
-							},
+							backgroundColor: 'rgba(255, 255, 255, 0.8)',
 						}}
 					/>
 					<Button
@@ -98,19 +89,9 @@ const Login = () => {
 							width: '60%',
 							height: '20%',
 							marginTop: '0rem',
+							backgroundColor: '#9ac6c9',
 						}}>
 						Log in with Spotify
-					</Button>
-					<Button
-						href='https://www.spotify.com/sg-en/signup?flow_id=fba86dcd-96d7-4e4c-a61a-11087c9e62dc%3A1693990596&forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fscope%3Duser-read-playback-state%2Bstreaming%2Buser-modify-playback-state%26response_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8000%252Faccounts%252Fspotify%252Flogin%252Fcallback%252F%26state%3DuZgSaYP920xjafpu%26client_id%3D9586b49be80f489bb5c32e5614822cd1%26flow_ctx%3Dfba86dcd-96d7-4e4c-a61a-11087c9e62dc%253A1693990596'
-						endIcon={<LoginOutlined></LoginOutlined>}
-						sx={{
-							textTransform: 'none',
-							width: '60%',
-							color: blue[50],
-							marginTop: '1rem',
-						}}>
-						Sign up with Spotify
 					</Button>
 				</Box>
 			</Container>
