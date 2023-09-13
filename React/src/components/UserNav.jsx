@@ -71,7 +71,13 @@ const UserNav = (props) => {
 			<Drawer
 				variant='permanent'
 				anchor='left'
-				sx={{ '& .MuiDrawer-paper': { backgroundColor: blue[50] } }}>
+				sx={{
+					'& .MuiDrawer-paper': {
+						backgroundColor: blue[50],
+						boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+						zIndex: 1,
+					},
+				}}>
 				<List>
 					<ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
 						<Link

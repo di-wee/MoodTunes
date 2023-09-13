@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
-import { indigo, lightBlue } from '@mui/material/colors';
+import { deepPurple, indigo, lightBlue } from '@mui/material/colors';
 import SpotifyPlayer from './SpotifyPlayer';
 
 const Tracks = (props) => {
@@ -262,13 +262,13 @@ const Tracks = (props) => {
 					sx={{
 						display: 'flex',
 						flexWrap: 'wrap',
-						minWidth: '40%',
-						width: '40%',
+
+						width: '30%',
 						alignItems: 'center',
 						justifyContent: 'center',
 						height: '4rem',
 						backgroundColor: lightBlue[50],
-						borderRadius: '5%',
+						borderRadius: '30px',
 					}}>
 					<Typography
 						variant='h6'
@@ -299,10 +299,11 @@ const Tracks = (props) => {
 						flexDirection: 'column',
 						flexWrap: 'nowrap',
 						minWidth: 600,
-						width: '90%',
+						width: '80%',
 						marginTop: '1rem',
 						padding: '1rem',
-						backgroundColor: lightBlue[100],
+						backgroundColor: deepPurple[200],
+						borderRadius: '8px',
 					}}>
 					{songs.length > 0 ? (
 						<>
@@ -314,6 +315,9 @@ const Tracks = (props) => {
 										alignItems: 'center',
 										marginBottom: '10px',
 										justifyContent: 'space-between',
+										backgroundColor: deepPurple[100], // inner pastel background
+										borderRadius: '8px', // Rounded corners
+										padding: '8px', // padding
 									}}>
 									<Box
 										sx={{

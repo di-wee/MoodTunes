@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import UserContext from '../context/UserContext';
 import {
 	Button,
@@ -18,6 +18,7 @@ import Draggable from 'react-draggable';
 function SpotifyPlayer(props) {
 	const userCtx = useContext(UserContext);
 	const { setDeviceId, isPaused, setPaused } = userCtx;
+	const playerRef = useRef(null);
 
 	const [token, setToken] = useState('');
 	const [isLoading, setLoading] = useState(true);
@@ -73,7 +74,7 @@ function SpotifyPlayer(props) {
 
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			//creating the spotify player thru a class
-			const player = new window.Spotify.Player({
+			playerRef.current = new window.Spotify.Player({
 				name: 'MoodPlayer',
 
 				//callback function to call the spotify access token
@@ -84,16 +85,16 @@ function SpotifyPlayer(props) {
 			});
 
 			//event listeners for when the player is 'ready'
-			player.addListener('ready', ({ device_id }) => {
+			playerRef.current.addListener('ready', ({ device_id }) => {
 				console.log('Ready with Device ID', device_id);
 				setDeviceId(device_id);
 			});
 
-			player.addListener('not_ready', ({ device_id }) => {
+			playerRef.current.addListener('not_ready', ({ device_id }) => {
 				console.log('Device ID has gone offline', device_id);
 			});
 
-			player.addListener('player_state_changed', (state) => {
+			playerRef.current.addListener('player_state_changed', (state) => {
 				if (!state) {
 					return;
 				}
@@ -107,9 +108,27 @@ function SpotifyPlayer(props) {
 				}
 			});
 
-			player.connect();
+			playerRef.current.connect();
 		};
 	}, [token]);
+
+	useEffect(() => {
+		return () => {
+			// clean up logic when user goes to another component; to disconnect player
+			if (playerRef.current) {
+				playerRef.current.disconnect();
+			}
+			setTrack({
+				name: 'Unknown',
+				album: {
+					images: [{ url: 'defaultImageURL' }],
+				},
+				artists: [{ name: 'Unknown' }],
+			});
+			setPaused(true);
+			setLoading(true);
+		};
+	}, []);
 
 	useEffect(() => {
 		fetchToken();

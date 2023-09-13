@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Container, Paper } from '@mui/material';
 import UserContext from '../context/UserContext';
+import { blue, indigo, lightBlue, pink } from '@mui/material/colors';
 
 const UserDashboard = () => {
 	const userCtx = useContext(UserContext);
@@ -99,23 +100,58 @@ const UserDashboard = () => {
 	}, []);
 
 	return (
-		<div>
-			{isLoading ? (
-				<CircularProgress />
-			) : (
-				<Box sx={{ display: 'flex', flexDirection: 'row' }}>
+		<div
+			style={{
+				height: '100vh',
+				backgroundColor: lightBlue, // Pastel pink background
+			}}>
+			<Container maxWidth='lg'>
+				{isLoading ? (
 					<Box
-						sx={{ width: 240 /* Adjust based on the width of your Drawer */ }}>
-						<UserNav
-							displayname={userInfo.display_name}
-							displaypic={userInfo.images}
-						/>
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: '00vh',
+						}}>
+						<CircularProgress />
 					</Box>
-					<Box sx={{ flexGrow: 1 }}>
-						<UserDisplay />
-					</Box>
-				</Box>
-			)}
+				) : (
+					<Paper
+						elevation={3}
+						sx={{
+							display: 'flex',
+							flexDirection: 'row',
+							backgroundColor: indigo[200],
+							borderRadius: '20px', // Increased to make it look more dreamy
+						}}>
+						<Box
+							sx={{
+								width: 240,
+								backgroundColor: lightBlue[100], // Pastel lavender
+								borderRadius: '20px', // Dreamy rounded corners
+								padding: '1rem',
+								marginRight: '1rem',
+								margin: '2rem',
+							}}>
+							<UserNav
+								displayname={userInfo.display_name}
+								displaypic={userInfo.images}
+							/>
+						</Box>
+						<Box
+							sx={{
+								flexGrow: 1,
+								backgroundColor: indigo[50], // Pastel green
+								padding: '1rem',
+								borderRadius: '20px',
+								margin: '2rem', // Dreamy rounded corners
+							}}>
+							<UserDisplay />
+						</Box>
+					</Paper>
+				)}
+			</Container>
 		</div>
 	);
 };

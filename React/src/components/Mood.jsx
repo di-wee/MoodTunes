@@ -7,7 +7,7 @@ import {
 	Typography,
 } from '@mui/material';
 
-import { lightBlue } from '@mui/material/colors';
+import { blue, deepPurple, indigo, lightBlue } from '@mui/material/colors';
 import { AddCircle, PauseCircle, PlayCircle } from '@mui/icons-material';
 import SpotifyPlayerComponent from './SpotifyPlayer';
 import UserContext from '../context/UserContext';
@@ -172,7 +172,10 @@ const Mood = (props) => {
 			style={{
 				display: 'flex',
 				justifyContent: 'center',
-				height: '100vh',
+				height: '100%',
+				backgroundColor: blue[50],
+				borderRadius: '5%',
+				margin: '2rem',
 			}}>
 			<Box
 				sx={{
@@ -190,13 +193,13 @@ const Mood = (props) => {
 						alignItems: 'center',
 						justifyContent: 'center',
 						height: '4rem',
-						backgroundColor: lightBlue[50],
+						backgroundColor: indigo[300],
 						borderRadius: '5%',
 					}}>
 					<Typography
 						variant='h6'
 						textAlign={'center'}
-						sx={{ color: lightBlue[900] }}>
+						sx={{ color: blue[50] }}>
 						{mood.title} Songs:
 					</Typography>
 				</Box>
@@ -209,7 +212,8 @@ const Mood = (props) => {
 						width: '100%',
 						marginTop: '1rem',
 						padding: '1rem',
-						backgroundColor: lightBlue[100],
+						backgroundColor: deepPurple[200],
+						borderRadius: '8px',
 					}}>
 					{songs.slice(startIndex, endIndex).map((song, index) => (
 						<div
@@ -219,6 +223,9 @@ const Mood = (props) => {
 								alignItems: 'center',
 								marginBottom: '10px',
 								justifyContent: 'space-between',
+								backgroundColor: deepPurple[100], // inner pastel background
+								borderRadius: '8px', // Rounded corners
+								padding: '8px', // padding
 							}}>
 							<Box
 								sx={{
@@ -236,10 +243,13 @@ const Mood = (props) => {
 									}}
 									image={song.album_art}
 								/>
-
 								<Box sx={{ marginRight: '1rem' }}>
-									<Typography>Song: {song.name}</Typography>
-									<Typography>Artist: {song.artist}</Typography>
+									<Typography style={{ color: '#3D405B' }}>
+										Song: {song.name}
+									</Typography>
+									<Typography style={{ color: '#3D405B' }}>
+										Artist: {song.artist}
+									</Typography>
 								</Box>
 							</Box>
 							<Box>
@@ -266,7 +276,11 @@ const Mood = (props) => {
 					))}
 				</Box>
 				<Pagination
-					sx={{ marginTop: '2rem' }}
+					sx={{
+						marginTop: '2rem',
+						backgroundColor: indigo[200], // pastel yellow for pagination
+						borderRadius: '8px', // Rounded corners
+					}}
 					color='primary'
 					count={totalPages}
 					page={page}
