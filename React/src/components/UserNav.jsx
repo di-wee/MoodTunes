@@ -151,18 +151,24 @@ const UserNav = (props) => {
 										marginTop: '0.5rem',
 									}}>
 									<ButtonBase
-										sx={{ marginTop: '0.5rem' }}
+										sx={{ marginRight: '1rem' }}
 										onClick={() => handlePlaylistClick(playlist)}>
 										<Typography sx={{ color: lightBlue[900] }}>
 											{playlist.name}
 										</Typography>
 									</ButtonBase>
-									<IconButton onClick={() => setShowDeleteModal(true)}>
-										<Delete></Delete>
-									</IconButton>
-									<IconButton onClick={() => setShowEditModal(true)}>
-										<Edit></Edit>
-									</IconButton>
+									<Box sx={{ display: 'flex' }}>
+										<IconButton
+											sx={{ padding: '0px' }}
+											onClick={() => setShowDeleteModal(true)}>
+											<Delete></Delete>
+										</IconButton>
+										<IconButton
+											sx={{ padding: '0px' }}
+											onClick={() => setShowEditModal(true)}>
+											<Edit></Edit>
+										</IconButton>
+									</Box>
 								</Box>
 								{showDeleteModal && (
 									<DeleteWarningModal

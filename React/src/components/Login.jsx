@@ -2,7 +2,7 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import { Spotify } from 'mdi-material-ui';
 import UserContext from '../context/UserContext';
-import { blue } from '@mui/material/colors';
+import { blue, teal } from '@mui/material/colors';
 
 const Login = () => {
 	const UserCtx = useContext(UserContext);
@@ -38,7 +38,7 @@ const Login = () => {
 			<Container maxWidth='xs'>
 				<Box
 					sx={{
-						bgcolor: '#AEDFF7',
+						bgcolor: blue[300],
 						height: '49vh',
 						width: '90%',
 						borderRadius: '10%',
@@ -89,7 +89,7 @@ const Login = () => {
 							width: '60%',
 							height: '20%',
 							marginTop: '0rem',
-							backgroundColor: '#9ac6c9',
+							backgroundColor: teal[400],
 						}}>
 						Log in with Spotify
 					</Button>
