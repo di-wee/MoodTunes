@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
 	Box,
 	CardMedia,
@@ -7,7 +7,7 @@ import {
 	Typography,
 } from '@mui/material';
 
-import { blue, deepPurple, indigo, lightBlue } from '@mui/material/colors';
+import { blue, deepPurple, indigo } from '@mui/material/colors';
 import { AddCircle, PauseCircle, PlayCircle } from '@mui/icons-material';
 import SpotifyPlayerComponent from './SpotifyPlayer';
 import UserContext from '../context/UserContext';

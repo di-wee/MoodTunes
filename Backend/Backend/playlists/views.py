@@ -20,6 +20,8 @@ class CreatePlaylist(APIView):
 
         sp = spotipy.Spotify(auth=token_obj.token)
 
+
+# takes all the key-value pairs from request.data to put in data
         data = {
             **request.data,
             'user': request.user.id
@@ -32,6 +34,7 @@ class CreatePlaylist(APIView):
             spotify_playlist = sp.user_playlist_create(user.uid, serializer.data['name'])
             playlist = Playlist.objects.get(pk=serializer.data['id'])
             playlist.spotify_uri = spotify_playlist['uri']
+            playlist.spotify_id = spotify_playlist['id']
             playlist.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -175,13 +178,22 @@ class DeleteSongFromPlaylist(APIView):
 class EditPlaylistName(APIView):
     permission_classes = [IsAuthenticated]
 
+
+
     def patch(self, request, playlist_id):
+
+        user_social_account = SocialAccount.objects.get(user_id=request.user.id, provider='spotify')
+        token_obj = SocialToken.objects.get(account=user_social_account)
+
+        sp = spotipy.Spotify(auth=token_obj.token)
         try:
             playlist = Playlist.objects.get(id=playlist_id, user=request.user)
             new_name = request.data.get('name')
+            spotify_id = playlist.spotify_id
             if new_name is None:
                 return Response({"error": "New name not provided"}, status=status.HTTP_400_BAD_REQUEST)
             playlist.name = new_name
+            sp.playlist_change_details(playlist_id=spotify_id, name=str(new_name))
             playlist.save()
             return Response({"message": "Playlist name updated successfully"}, status=status.HTTP_200_OK)
 

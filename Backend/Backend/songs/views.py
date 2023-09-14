@@ -8,6 +8,7 @@ from .serializers import SpotifySongSerializer
 from moods.models import Mood
 from songs.models import Songs
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.permissions import IsAdminUser
 
 
 
@@ -32,6 +33,8 @@ def determine_mood(valence, energy, danceability):
 
 
 class SpotifySongSearch(APIView):
+
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
         # fetching query 'track' param

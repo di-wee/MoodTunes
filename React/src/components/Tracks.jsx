@@ -25,6 +25,8 @@ const Tracks = (props) => {
 	const userCtx = useContext(UserContext);
 	const { deviceId, isPaused } = userCtx;
 	const [localIsPaused, setLocalIsPaused] = useState({});
+	const [songId, setSongId] = useState('');
+	const [currentPlayingSongId, setCurrentPlayingSongId] = useState(null);
 
 	// pagination logic
 	const [page, setPage] = useState(1);
@@ -41,8 +43,20 @@ const Tracks = (props) => {
 		try {
 			if (isPaused === null || isPaused) {
 				await playSongFromPlaylist(playlist.spotify_uri);
+				setisPlaylistPaused(false);
+
+				// After playing entire playlist, all songs should be in "playing" state.
+				const newPausedState = {};
+				songs.forEach((song) => (newPausedState[song.id] = false));
+				setLocalIsPaused(newPausedState);
 			} else {
 				await pauseSong();
+				setisPlaylistPaused(true);
+
+				// If the entire playlist is paused, all songs should be in "paused" state.
+				const newPausedState = {};
+				songs.forEach((song) => (newPausedState[song.id] = true));
+				setLocalIsPaused(newPausedState);
 			}
 		} catch (error) {
 			console.error('Error:', error);
@@ -96,7 +110,7 @@ const Tracks = (props) => {
 			);
 
 			if (!res.ok) {
-				const errorInfo = await response.json();
+				const errorInfo = await res.json();
 				throw new Error(`Failed to play song: ${errorInfo.message}`);
 			}
 		} catch (error) {
@@ -146,7 +160,7 @@ const Tracks = (props) => {
 			);
 
 			if (!res.ok) {
-				const errorInfo = await response.json();
+				const errorInfo = await res.json();
 				throw new Error(`Failed to pause playback: ${errorInfo.message}`);
 			}
 
@@ -156,7 +170,7 @@ const Tracks = (props) => {
 		}
 	};
 
-	const nextSong = async () => {
+	const nextSong = async (songId) => {
 		try {
 			const res = await fetch(
 				import.meta.env.VITE_SERVER + '/playbacks/next_track/', // Update the URL according to your backend route
@@ -173,17 +187,26 @@ const Tracks = (props) => {
 			);
 
 			if (!res.ok) {
-				const errorInfo = await response.json();
+				const errorInfo = await res.json();
 				throw new Error(`Failed to get next track: ${errorInfo.message}`);
-			}
+			} else {
+				// updating localIsPaused to indicate the next song that should be playing
 
-			console.log('Next track');
+				const nextSongId = songId;
+
+				setLocalIsPaused((prevState) => ({
+					...prevState,
+					[nextSongId]: false,
+				}));
+
+				console.log('Next track');
+			}
 		} catch (error) {
 			console.error('Error geting next track:', error);
 		}
 	};
 
-	const previousSong = async () => {
+	const previousSong = async (songId) => {
 		try {
 			const res = await fetch(
 				import.meta.env.VITE_SERVER + '/playbacks/previous_track/',
@@ -200,11 +223,19 @@ const Tracks = (props) => {
 			);
 
 			if (!res.ok) {
-				const errorInfo = await response.json();
+				const errorInfo = await res.json();
 				throw new Error(`Failed to get previous track: ${errorInfo.message}`);
-			}
+			} else {
+				// updating localIsPaused to indicate the next song that should be playing
 
-			console.log('Previous track');
+				const nextSongId = songId;
+
+				setLocalIsPaused((prevState) => ({
+					...prevState,
+					[nextSongId]: false,
+				}));
+				console.log('Previous track');
+			}
 		} catch (error) {
 			console.error('Error geting previous track:', error);
 		}
@@ -245,9 +276,20 @@ const Tracks = (props) => {
 		}));
 	};
 
+	const onClickButton = (songId, songUri) => {
+		if (localIsPaused[songId]) {
+			playSong(songUri);
+		} else {
+			pauseSong();
+		}
+
+		setPauseState(songId);
+		setSongId(songId);
+	};
+
 	useEffect(() => {
 		getSongsFromPlaylist();
-	}, []);
+	}, [playlist.id]);
 
 	return (
 		<div>
@@ -348,12 +390,7 @@ const Tracks = (props) => {
 											variant='contained'
 											color='primary'
 											onClick={() => {
-												if (localIsPaused[song.id]) {
-													playSong(song.uri);
-												} else {
-													pauseSong();
-												}
-												setPauseState(song.id);
+												onClickButton(song.id, song.uri);
 											}}>
 											{localIsPaused[song.id] ? (
 												<PlayCircle />
@@ -388,7 +425,8 @@ const Tracks = (props) => {
 				pauseSong={pauseSong}
 				playSong={playSong}
 				nextSong={nextSong}
-				previousSong={previousSong}></SpotifyPlayer>
+				previousSong={previousSong}
+				songId={songId}></SpotifyPlayer>
 		</div>
 	);
 };

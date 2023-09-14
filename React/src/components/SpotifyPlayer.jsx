@@ -30,7 +30,14 @@ function SpotifyPlayer(props) {
 		artists: [{ name: 'Unknown' }],
 	});
 
-	const { pauseSong, playSong, nextSong, previousSong } = props;
+	const {
+		pauseSong,
+		playSong,
+		nextSong,
+		previousSong,
+		songId,
+		isPlaylistPaused,
+	} = props;
 
 	const fetchToken = async () => {
 		try {
@@ -97,7 +104,9 @@ function SpotifyPlayer(props) {
 					return;
 				}
 				setTrack(state.track_window.current_track);
+
 				setPaused(state.paused);
+
 				if (
 					state.track_window.current_track &&
 					state.track_window.current_track.album
@@ -109,6 +118,10 @@ function SpotifyPlayer(props) {
 			playerRef.current.connect();
 		};
 	}, [token]);
+
+	useEffect(() => {
+		console.log('isPaused changed:', isPaused);
+	}, [isPaused]);
 
 	useEffect(() => {
 		return () => {
@@ -123,6 +136,7 @@ function SpotifyPlayer(props) {
 				},
 				artists: [{ name: 'Unknown' }],
 			});
+
 			setPaused(true);
 			setLoading(true);
 		};
@@ -202,9 +216,10 @@ function SpotifyPlayer(props) {
 								style={{ marginRight: '-8px' }}
 								variant='contained'
 								color='secondary'
-								onClick={() => previousSong()}>
+								onClick={() => previousSong(songId)}>
 								<FastRewind />
 							</IconButton>
+
 							<IconButton
 								style={{ margin: '0 -8px' }}
 								variant='contained'
@@ -212,11 +227,12 @@ function SpotifyPlayer(props) {
 								onClick={() => (isPaused ? playSong() : pauseSong())}>
 								{isPaused ? <PlayBox /> : <PauseBox />}
 							</IconButton>
+
 							<IconButton
 								style={{ marginLeft: '-8px' }}
 								variant='contained'
 								color='secondary'
-								onClick={() => nextSong()}>
+								onClick={() => nextSong(songId)}>
 								<FastForward />
 							</IconButton>
 						</div>

@@ -65,6 +65,9 @@ class PlayTrack(APIView):
 
 
 class PlaySongFromPlaylist(APIView):
+
+
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         playlist_uri = request.data.get('playlist_uri', None)
         device_id = request.data.get('device_id', None)

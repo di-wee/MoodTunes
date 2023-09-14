@@ -4,6 +4,7 @@ import UserDisplay from '../components/UserDisplay';
 import { Box, CircularProgress, Container, Paper } from '@mui/material';
 import UserContext from '../context/UserContext';
 import { indigo, lightBlue } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard = () => {
 	const userCtx = useContext(UserContext);
@@ -11,6 +12,7 @@ const UserDashboard = () => {
 	const [jwt, setJwt] = useState(localStorage.getItem('jwtToken'));
 	const savedUsername = localStorage.getItem('username');
 	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
 
 	const getUserDetails = async (jwtToken) => {
 		try {
@@ -52,6 +54,9 @@ const UserDashboard = () => {
 
 			if (res.ok) {
 				return data.temptoken.temp_token;
+			} else {
+				alert('Incorrect spotify username entered, please log in again.');
+				navigate('/');
 			}
 		} catch (error) {
 			console.error('error:', error);

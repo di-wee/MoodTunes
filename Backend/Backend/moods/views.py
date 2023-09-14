@@ -9,6 +9,8 @@ from songs.serializers import DatabaseSongSerializer
 
 
 class GetMoods(APIView):
+
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         moods = Mood.objects.all()
         serializer = MoodSerializer(moods, many=True)

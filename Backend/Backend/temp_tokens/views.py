@@ -28,13 +28,13 @@ def get_jwt(user):
 class GetTempTokenByIdentifier(APIView):
     def post(self, request):
         username = request.data.get('username')
-        print(username)
+
         try:
             social_account = SocialAccount.objects.get(uid=username)
             user = social_account.user
             temp_token = UserTempToken.objects.get(user=user)
             serializer = TempTokenSerializer(temp_token)
-            print(temp_token)
+
             return Response({"temptoken": serializer.data}, status=status.HTTP_200_OK)
         except (SocialAccount.DoesNotExist, UserTempToken.DoesNotExist):
             return Response({'error': 'User or temp token not found.'}, status=status.HTTP_404_NOT_FOUND)

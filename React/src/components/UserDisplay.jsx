@@ -9,6 +9,9 @@ const UserDisplay = () => {
 	const [mood, setMood] = useState([]);
 	const userCtx = useContext(UserContext);
 	const { setCurrentMood } = userCtx;
+	const jwtTokenKey = 'jwtToken';
+	const getJWT = localStorage.getItem(jwtTokenKey);
+
 	const navigate = useNavigate();
 
 	const handleMoodClick = (mood) => {
@@ -17,7 +20,12 @@ const UserDisplay = () => {
 	};
 	const getMoods = async () => {
 		try {
-			const res = await fetch(import.meta.env.VITE_SERVER + '/moods/');
+			const res = await fetch(import.meta.env.VITE_SERVER + '/moods/', {
+				headers: {
+					Authorization: `Bearer ${getJWT}`,
+					'Content-Type': 'application/json',
+				},
+			});
 			const data = await res.json();
 
 			if (res.ok) {
