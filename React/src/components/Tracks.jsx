@@ -26,7 +26,7 @@ const Tracks = (props) => {
 	const { deviceId, isPaused } = userCtx;
 	const [localIsPaused, setLocalIsPaused] = useState({});
 	const [songId, setSongId] = useState('');
-	const [currentPlayingSongId, setCurrentPlayingSongId] = useState(null);
+	const [isPlaylistPaused, setisPlaylistPaused] = useState(null);
 
 	// pagination logic
 	const [page, setPage] = useState(1);
@@ -45,7 +45,7 @@ const Tracks = (props) => {
 				await playSongFromPlaylist(playlist.spotify_uri);
 				setisPlaylistPaused(false);
 
-				// After playing entire playlist, all songs should be in "playing" state.
+				// after playing entire playlist, all songs should be in "playing" state.
 				const newPausedState = {};
 				songs.forEach((song) => (newPausedState[song.id] = false));
 				setLocalIsPaused(newPausedState);
@@ -53,7 +53,7 @@ const Tracks = (props) => {
 				await pauseSong();
 				setisPlaylistPaused(true);
 
-				// If the entire playlist is paused, all songs should be in "paused" state.
+				// if the entire playlist is paused, all songs should be in "paused" state.
 				const newPausedState = {};
 				songs.forEach((song) => (newPausedState[song.id] = true));
 				setLocalIsPaused(newPausedState);
@@ -321,7 +321,11 @@ const Tracks = (props) => {
 				</Box>
 				<Button
 					startIcon={
-						isPaused || isPaused === null ? <PlayCircle /> : <StopCircle />
+						isPlaylistPaused || isPlaylistPaused == null ? (
+							<PlayCircle />
+						) : (
+							<StopCircle />
+						)
 					}
 					onClick={handlePlaylistClick}
 					variant='contained'
@@ -332,7 +336,9 @@ const Tracks = (props) => {
 						padding: '5px 10px',
 						marginTop: '1rem',
 					}}>
-					{isPaused || isPaused === null ? 'Play Playlist' : 'Stop Playlist'}
+					{isPlaylistPaused || isPlaylistPaused == null
+						? 'Play Playlist'
+						: 'Stop Playlist'}
 				</Button>
 
 				<Box
