@@ -46,6 +46,7 @@ const Tracks = (props) => {
 				setisPlaylistPaused(false);
 
 				// after playing entire playlist, all songs should be in "playing" state.
+				// to sync the loading state
 				const newPausedState = {};
 				songs.forEach((song) => (newPausedState[song.id] = false));
 				setLocalIsPaused(newPausedState);
@@ -79,6 +80,9 @@ const Tracks = (props) => {
 
 			if (res.ok) {
 				setSongs(data);
+
+				//adding song.id key and pause state value to an empty object
+				//and then setting it to state so eg. { song.id: true} as default
 				const initialPauseState = {};
 				data.forEach((song) => {
 					initialPauseState[song.id] = true;
@@ -146,7 +150,7 @@ const Tracks = (props) => {
 	const pauseSong = async () => {
 		try {
 			const res = await fetch(
-				import.meta.env.VITE_SERVER + '/playbacks/pause/', // Update the URL according to your backend route
+				import.meta.env.VITE_SERVER + '/playbacks/pause/',
 				{
 					method: 'POST',
 					headers: {
@@ -173,7 +177,7 @@ const Tracks = (props) => {
 	const nextSong = async (songId) => {
 		try {
 			const res = await fetch(
-				import.meta.env.VITE_SERVER + '/playbacks/next_track/', // Update the URL according to your backend route
+				import.meta.env.VITE_SERVER + '/playbacks/next_track/',
 				{
 					method: 'POST',
 					headers: {
