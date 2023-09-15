@@ -58,7 +58,14 @@ Install dependencies:
 To install React, MUI components, Material UI icons, and Spotify SDK:
 
 ````
-npm install react @mui/material @mui/icons-material spotify-web-playback-sdk
+npm install react @mui/material @mui/icons-material spotify-web-playback-sdk react-draggable
+````
+
+
+Add in environmental variables:
+
+````
+VITE_SERVER=http://localhost:8000
 ````
 
 
