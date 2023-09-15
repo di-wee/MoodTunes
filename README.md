@@ -44,8 +44,136 @@ MoodTunes is a Spotify-based application that curates playlists based on your mo
 
 ## Installation 
 
+### Frontend (React.js with MUI and Spotify SDK):
+
+Clone the repository:
+
+```
+git clone [your-repo-url]
+cd [your-frontend-directory]
+```
+
+Install dependencies:
+
+To install React, MUI components, Material UI icons, and Spotify SDK:
+
+````
+npm install react @mui/material @mui/icons-material spotify-web-playback-sdk
+````
+
+
+Start the development server:
+
+````
+npm start
+````
+
+### Backend (Python, Django, AllAuth):
+
+Navigate to the backend directory:
+
+```
+cd [your-backend-directory]
+```
+
+Set up a virtual environment:
+
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install backend dependencies:
+
+Create a requirements.txt file with the following content:
+
+```
+Django
+django-allauth
+django-allauth[providers]
+django-cors-headers
+psycopg2
+```
+
+Then, install the dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+Setup PostgreSQL:
+
+```
+brew install postgresql
+```
+
+Start PostgreSQL:
+
+```
+pg_ctl -D /usr/local/var/postgres start
+```
+
+Create a new database:
+
+```
+createdb your_db_name
+```
+
+Update the DATABASES setting in your Django project's settings.py with the appropriate PostgreSQL credentials:
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_db_name',
+        'USER': 'your_postgres_user',
+        'PASSWORD': 'your_postgres_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
+
+Run migrations:
+
+```
+python manage.py migrate
+```
+
+Start the Django development server:
+
+```
+python manage.py runserver
+```
+
 
 ## Screenshots
+
+### Login page:
+<img width="1460" alt="Screenshot 2023-09-14 at 10 05 21 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/3cfa0195-339d-4556-b87b-59f0fd8ec3d8">
+
+
+### User Dashboard:
+<img width="1425" alt="Screenshot 2023-09-14 at 10 06 44 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/83cfc306-a3d7-440f-96df-4693f14fff79">
+
+
+### Inside a Mood:
+<img width="1462" alt="Screenshot 2023-09-14 at 10 06 56 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/1e58b43d-a89a-4078-ac13-0bea1675e417">
+
+
+### User Playlist:
+<img width="1462" alt="Screenshot 2023-09-14 at 10 07 10 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/1aa6d21e-9eae-4384-af94-a6d90664d798">
+
+### Admin Login:
+<img width="1454" alt="Screenshot 2023-09-14 at 10 07 52 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/2bac4835-bf85-4db0-9917-57952210cfde">
+
+### Admin Dashboard:
+<img width="1439" alt="Screenshot 2023-09-14 at 10 13 54 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/043b2055-2d80-4b7b-8eeb-34195bc5c82d">
+
+
+
+
+
 
 
 ## API Endpoints
