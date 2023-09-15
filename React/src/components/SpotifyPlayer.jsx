@@ -22,6 +22,7 @@ function SpotifyPlayer(props) {
 	const [isLoading, setLoading] = useState(true);
 	const jwtTokenKey = 'jwtToken';
 	const getJWT = localStorage.getItem(jwtTokenKey);
+
 	const [currentTrack, setTrack] = useState({
 		name: 'Unknown',
 		album: {

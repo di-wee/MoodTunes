@@ -21,8 +21,8 @@ import EditPlaylistModal from './EditPlaylistModal';
 
 const UserNav = (props) => {
 	const { displaypic, displayname, mood } = props;
-	const [showEditModal, setShowEditModal] = useState(false);
-	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showEditModal, setShowEditModal] = useState('');
+	const [showDeleteModal, setShowDeleteModal] = useState('');
 	const [showModal, setShowModal] = useState(false);
 	const userCtx = useContext(UserContext);
 	const { getPlaylists, currentMood, getAllPlaylist } = userCtx;
@@ -160,29 +160,29 @@ const UserNav = (props) => {
 									<Box sx={{ display: 'flex' }}>
 										<IconButton
 											sx={{ padding: '0px' }}
-											onClick={() => setShowDeleteModal(true)}>
+											onClick={() => setShowDeleteModal(playlist.id)}>
 											<Delete></Delete>
 										</IconButton>
 										<IconButton
 											sx={{ padding: '0px' }}
-											onClick={() => setShowEditModal(true)}>
+											onClick={() => setShowEditModal(playlist.id)}>
 											<Edit></Edit>
 										</IconButton>
 									</Box>
 								</Box>
-								{showDeleteModal && (
+								{showDeleteModal === playlist.id && (
 									<DeleteWarningModal
 										deletePlaylist={deletePlaylist}
 										playlistId={playlist.id}
-										showDeleteModal={showDeleteModal}
+										showDeleteModal={showDeleteModal !== ''}
 										setShowDeleteModal={setShowDeleteModal}
 										playlistName={playlist.name}></DeleteWarningModal>
 								)}
 
-								{showEditModal && (
+								{showEditModal === playlist.id && (
 									<EditPlaylistModal
 										playlistId={playlist.id}
-										showEditModal={showEditModal}
+										showEditModal={showEditModal !== ''}
 										setShowEditModal={setShowEditModal}
 										playlistName={playlist.name}
 										getAllPlaylist={getAllPlaylist}></EditPlaylistModal>

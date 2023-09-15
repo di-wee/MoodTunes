@@ -12,7 +12,7 @@ const DeleteWarningModal = (props) => {
 	} = props;
 
 	const handleClose = () => {
-		setShowDeleteModal(false);
+		setShowDeleteModal('');
 	};
 	const style = {
 		top: '50%',

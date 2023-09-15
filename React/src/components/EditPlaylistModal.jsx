@@ -26,7 +26,7 @@ const EditPlaylistModal = (props) => {
 	const getJWT = localStorage.getItem(jwtTokenKey);
 
 	const handleClose = () => {
-		setShowEditModal(false);
+		setShowEditModal('');
 	};
 
 	const onSubmit = async () => {
@@ -34,7 +34,7 @@ const EditPlaylistModal = (props) => {
 			return alert('Please enter a playlist name');
 		} else {
 			EditPlaylistName();
-			await setShowEditModal(false);
+			await setShowEditModal('');
 		}
 	};
 

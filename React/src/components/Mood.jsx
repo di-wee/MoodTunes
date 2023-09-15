@@ -173,7 +173,6 @@ const Mood = (props) => {
 				display: 'flex',
 				justifyContent: 'center',
 				height: '100%',
-				backgroundColor: blue[50],
 				borderRadius: '5%',
 				margin: '2rem',
 			}}>
@@ -208,7 +207,7 @@ const Mood = (props) => {
 						display: 'flex',
 						flexDirection: 'column',
 						flexWrap: 'nowrap',
-						minWidth: 600,
+						minWidth: 900,
 						width: '100%',
 						marginTop: '1rem',
 						padding: '1rem',
