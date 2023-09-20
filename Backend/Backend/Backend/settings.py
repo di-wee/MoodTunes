@@ -21,19 +21,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ba$!nl3un$#+5bio6xftn^rrq_be(c9@)0_)kb5g7p+k=b82_u'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 # Application definition
 
 
-SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
-SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8001/'
+SPOTIPY_CLIENT_ID = os.environ.get('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = os.environ.get('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URI = os.environ.get('SPOTIPY_REDIRECT_URI')
 
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
@@ -137,7 +137,8 @@ DATABASES = {
     # }
 }
 
-DATABASES["default"] = dj_database_url.parse("postgres://db_user:hu0dru8tNRHKFS8WXJBmpDvDNaoOqIdT@dpg-ck577omg2bec73ae7elg-a.singapore-postgres.render.com/moodtunes")
+database_url = os.environ.get('DATABASE_URL')
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 
