@@ -43,3 +43,4 @@ spotipy==2.23.0
 sqlparse==0.4.4
 status==0.2.5
 urllib3==2.0.4
+whitenoise
