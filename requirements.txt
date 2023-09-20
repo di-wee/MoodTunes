@@ -23,7 +23,7 @@ Naked==0.1.32
 numpy==1.21.6
 oauthlib==3.2.2
 packaging==23.1
-Pillow==10.0.0
+Pillow==9.5.0
 psycopg2-binary==2.9.7
 pycparser==2.21
 PyJWT==1.7.1
