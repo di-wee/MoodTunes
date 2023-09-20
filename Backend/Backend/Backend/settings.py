@@ -140,7 +140,7 @@ DATABASES = {
 
 
 
-DATABASES["default"] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
+DATABASES["default"] = dj_database_url.parse('postgres://db_user:hu0dru8tNRHKFS8WXJBmpDvDNaoOqIdT@dpg-ck577omg2bec73ae7elg-a.singapore-postgres.render.com/moodtunes')
 
 
 
