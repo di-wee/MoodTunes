@@ -30,12 +30,12 @@ const UserDisplay = () => {
 
 			if (res.ok) {
 				const imagesUrl = [
-					'/happy.png',
-					'/sad.png',
 					'/angry.png',
-					'/relaxed.png',
 					'/energetic.png',
+					'/happy.png',
 					'/intense.png',
+					'/relaxed.png',
+					'/sad.png',
 					'/whatever.png',
 				];
 
