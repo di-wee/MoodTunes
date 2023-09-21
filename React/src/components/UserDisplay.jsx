@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Mood from './Mood';
-import { Box, ButtonBase, Typography } from '@mui/material';
+import { Box, ButtonBase, Typography, Paper } from '@mui/material';
 import './UserDisplay.css';
-import { lightBlue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+
+const spotifyGreen = '#1DB954';
+const spotifyBlack = '#121212';
+const spotifyGrey = '#B3B3B3';
 const UserDisplay = () => {
 	const [mood, setMood] = useState([]);
 	const userCtx = useContext(UserContext);
@@ -57,55 +59,70 @@ const UserDisplay = () => {
 	}, []);
 
 	return (
-		<div>
-			<Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '3rem' }}>
-				<Typography
-					variant='h6'
-					textAlign={'center'}
-					sx={{ color: lightBlue[900] }}>
-					How are you feeling today?
-				</Typography>
-				<Box
-					sx={{
-						display: 'flex',
-						flexWrap: 'wrap',
-						minWidth: 300,
-						width: '100%',
-						justifyContent: 'center',
-					}}>
-					{mood.map((mood) => (
-						<ButtonBase
-							onClick={() => {
-								handleMoodClick(mood);
-							}}
-							focusRipple
-							key={mood.id}
-							className='imageButton'
-							sx={{
-								width: mood.width,
-								margin: '1.5rem',
-							}}>
-							<span
-								className='imageSrc'
-								style={{ backgroundImage: `url(${mood.url})` }}></span>
-							<span className='imageBackdrop'></span>
-							<span className='image'>
-								<Typography
-									sx={{
-										position: 'relative',
-										padding: '16px',
-										paddingTop: '8px',
-										paddingBottom: '14px',
-									}}>
-									{mood.title}
-									<span className='imageMarked'></span>
-								</Typography>
-							</span>
-						</ButtonBase>
-					))}
-				</Box>
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				backgroundColor: spotifyBlack,
+				color: spotifyGreen,
+				padding: '2rem',
+				height: '100%',
+				alignItems: 'center',
+				gap: '2rem',
+			}}>
+			<Typography
+				variant='h4'
+				gutterBottom>
+				How are you feeling today?
+			</Typography>
+			<Box
+				sx={{
+					display: 'flex',
+					flexWrap: 'wrap',
+					gap: '2rem',
+					justifyContent: 'center',
+					width: '100%',
+				}}>
+				{mood.map((mood) => (
+					<ButtonBase
+						onClick={() => handleMoodClick(mood)}
+						focusRipple
+						key={mood.title}
+						className='imageButton'
+						sx={{
+							backgroundImage: `url(${mood.url})`,
+							width: '120px',
+							height: '120px',
+							backgroundSize: 'cover',
+							backgroundRepeat: 'no-repeat',
+							backgroundPosition: 'center',
+							position: 'relative',
+							borderRadius: '20%',
+							overflow: 'hidden',
+							'&:hover .imageBackdrop': {
+								opacity: 0.15,
+							},
+							'&:hover .imageMarked': {
+								opacity: 0,
+							},
+						}}>
+						<span
+							className='imageSrc'
+							style={{ backgroundImage: `url(${mood.url})` }}></span>
+						<span className='imageBackdrop'></span>
+						<span className='image'>
+							<Typography
+								variant='subtitle1'
+								color='inherit'
+								className='imageTitle'>
+								{mood.title}
+								<span className='imageMarked'></span>
+							</Typography>
+						</span>
+					</ButtonBase>
+				))}
 			</Box>
-		</div>
+		</Box>
 	);
 };
 

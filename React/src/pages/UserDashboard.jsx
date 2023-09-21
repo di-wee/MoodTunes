@@ -3,8 +3,11 @@ import UserNav from '../components/UserNav';
 import UserDisplay from '../components/UserDisplay';
 import { Box, CircularProgress, Container, Paper } from '@mui/material';
 import UserContext from '../context/UserContext';
-import { indigo, lightBlue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
+
+const spotifyBlack = '#121212';
+const spotifyGreen = '#1DB954';
+const spotifyGrey = '#B3B3B3';
 
 const UserDashboard = () => {
 	const userCtx = useContext(UserContext);
@@ -105,11 +108,7 @@ const UserDashboard = () => {
 	}, []);
 
 	return (
-		<div
-			style={{
-				height: '100vh',
-				backgroundColor: lightBlue, // Pastel pink background
-			}}>
+		<div style={{ height: '100vh', backgroundColor: spotifyBlack }}>
 			<Container maxWidth='lg'>
 				{isLoading ? (
 					<Box
@@ -117,9 +116,9 @@ const UserDashboard = () => {
 							display: 'flex',
 							justifyContent: 'center',
 							alignItems: 'center',
-							height: '00vh',
+							height: '100vh',
 						}}>
-						<CircularProgress />
+						<CircularProgress sx={{ color: '#1ED760' }} />
 					</Box>
 				) : (
 					<Paper
@@ -127,17 +126,15 @@ const UserDashboard = () => {
 						sx={{
 							display: 'flex',
 							flexDirection: 'row',
-							backgroundColor: indigo[200],
+							backgroundColor: spotifyBlack,
 							borderRadius: '20px',
 						}}>
 						<Box
 							sx={{
 								width: 240,
-								backgroundColor: lightBlue[100],
 								borderRadius: '20px',
 								padding: '1rem',
 								marginLeft: '-2rem',
-
 								marginTop: '2rem',
 							}}>
 							<UserNav
@@ -148,9 +145,7 @@ const UserDashboard = () => {
 						<Box
 							sx={{
 								flexGrow: 1,
-								backgroundColor: indigo[50],
 								padding: '1rem',
-								borderRadius: '20px',
 								margin: '2rem',
 							}}>
 							<UserDisplay />

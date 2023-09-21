@@ -1,5 +1,4 @@
-/* styles.css */
-.imageButton {
+styles.css .imageButton {
 	position: relative;
 	height: 200px;
 	border-radius: 8px;
@@ -28,11 +27,11 @@
 }
 
 .imageButton .imageMarked {
-	height: 3px;
+	height: 2px;
 	width: 18px;
 	background-color: #fff;
 	position: absolute;
-	bottom: -2px;
+	bottom: 40px;
 	left: calc(50% - 9px);
 	transition: opacity 250ms ease-in-out;
 }

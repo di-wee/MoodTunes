@@ -19,7 +19,7 @@ const UserPlaylist = () => {
 	return (
 		<div>
 			<Box sx={{ display: 'flex', flexDirection: 'row' }}>
-				<Box sx={{ width: 240 /* Adjust based on the width of your Drawer */ }}>
+				<Box sx={{ width: 220 /* Adjust based on the width of your Drawer */ }}>
 					<UserNav
 						displayname={userInfo.display_name}
 						displaypic={userInfo.images}

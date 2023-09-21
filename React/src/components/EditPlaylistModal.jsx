@@ -7,7 +7,6 @@ import {
 	Input,
 	InputLabel,
 } from '@mui/material';
-import { blue } from '@mui/material/colors';
 import React, { useState, useRef } from 'react';
 
 const EditPlaylistModal = (props) => {
@@ -80,41 +79,80 @@ const EditPlaylistModal = (props) => {
 	};
 
 	return (
-		<div>
-			<Dialog
-				open={showEditModal}
-				onClose={handleClose}>
+		<Dialog
+			open={showEditModal}
+			onClose={handleClose}
+			BackdropProps={{
+				style: {
+					backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark backdrop
+				},
+			}}>
+			<Box
+				component='form'
+				sx={{
+					bgcolor: '#121212', // Spotify dark background
+					color: '#FFFFFF', // White text
+					p: 4,
+					width: '100%',
+					maxWidth: 400,
+					borderRadius: 2,
+				}}
+				display='flex'
+				flexDirection='column'
+				alignItems='center'>
+				<FormControl
+					variant='standard'
+					fullWidth>
+					<InputLabel
+						htmlFor='component-simple'
+						sx={{ color: '#FFFFFF' }}>
+						Playlist Name
+					</InputLabel>
+					<Input
+						fullWidth
+						inputRef={playlistRef}
+						defaultValue={playlistName}
+						sx={{
+							color: '#FFFFFF',
+							border: '1px solid #444',
+							bgcolor: '#282828',
+							borderRadius: 2,
+							'&:hover': {
+								borderColor: '#1DB954',
+							},
+							'&.Mui-focused': {
+								borderColor: '#1DB954',
+							},
+						}}
+					/>
+				</FormControl>
+
 				<Box
-					component='form'
-					sx={style}
+					mt={3}
 					display='flex'
-					alignItems='center'>
-					<FormControl
-						variant='standard'
-						mr={2}>
-						<InputLabel htmlFor='component-simple'>Playlist Name</InputLabel>
-						<Input
-							fullWidth
-							inputRef={playlistRef}
-							defaultValue={playlistName}
-						/>
-					</FormControl>
+					alignItems='center'
+					width='100%'>
 					<Button
+						fullWidth
 						disabled={loading}
 						onClick={onSubmit}
 						variant='contained'
-						sx={{ backgroundColor: blue[800], marginLeft: '3rem' }}>
-						{loading ? 'Creating...' : 'Edit'}
+						style={{
+							backgroundColor: '#1DB954', // Spotify green
+							color: '#FFFFFF',
+						}}>
+						{loading ? 'Creating...' : 'Submit'}
 					</Button>
 					{loading && (
 						<CircularProgress
 							sx={{ marginLeft: '1rem' }}
 							size={24}
+							color='inherit'
 						/>
 					)}
 				</Box>
-			</Dialog>
-		</div>
+			</Box>
+		</Dialog>
 	);
 };
 

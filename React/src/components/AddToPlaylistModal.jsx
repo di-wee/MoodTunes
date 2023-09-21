@@ -6,7 +6,6 @@ import {
 	DialogTitle,
 	Typography,
 } from '@mui/material';
-import { lightBlue } from '@mui/material/colors';
 import React, { useContext } from 'react';
 import UserContext from '../context/UserContext';
 import { AddCircle } from '@mui/icons-material';
@@ -57,41 +56,55 @@ const AddToPlaylistModal = (props) => {
 	};
 
 	return (
-		<div sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+		<div>
 			<Dialog
 				open={showModal}
-				onClose={handleClose}>
+				onClose={handleClose}
+				PaperProps={{
+					style: {
+						backgroundColor: '#181818',
+						color: 'white',
+					},
+				}}>
 				<Box
 					component='form'
+					justifyContent='center'
 					sx={style}
 					display='flex'
-					alignItems='center'
-					justifyContent='center'>
+					flexDirection='column'
+					alignItems='center'>
 					<DialogTitle>
 						<Typography
 							variant='h6'
 							textAlign={'center'}
-							sx={{ color: lightBlue[900] }}>
+							sx={{ color: 'white' }}>
 							Playlists:
 						</Typography>
-						<DialogContent>
-							{getPlaylists.map((playlist) => (
-								<div style={{ display: 'flex' }}>
-									<Typography
-										key={playlist.id}
-										gutterBottom>
-										{playlist.name}
-									</Typography>
-									<AddCircle
-										onClick={() => {
-											addSongsToPlaylist(songId, playlist.id);
-										}}
-										color='primary'
-										sx={{ marginLeft: '1rem', cursor: 'pointer' }}></AddCircle>
-								</div>
-							))}
-						</DialogContent>
 					</DialogTitle>
+					<DialogContent sx={{ color: 'white', width: '100%' }}>
+						{getPlaylists.map((playlist) => (
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									gap: '1rem',
+								}}>
+								<Typography
+									key={playlist.id}
+									gutterBottom>
+									{playlist.name}
+								</Typography>
+								<AddCircle
+									onClick={() => {
+										addSongsToPlaylist(songId, playlist.id);
+									}}
+									color='action'
+									sx={{ color: '#1DB954', cursor: 'pointer' }}
+								/>
+							</div>
+						))}
+					</DialogContent>
 				</Box>
 			</Dialog>
 		</div>

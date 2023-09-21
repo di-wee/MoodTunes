@@ -4,7 +4,6 @@ import UserDashboard from './pages/UserDashboard';
 import UserPlaylist from './pages/UserPlaylist';
 import Main from './pages/Main';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { indigo } from '@mui/material/colors';
 import UserContext from './context/UserContext';
 import SongList from './pages/SongList';
 const theme = createTheme({
@@ -67,7 +66,7 @@ function App() {
 				isPaused,
 				setPaused,
 			}}>
-			<div style={{ backgroundColor: indigo[100] }}>
+			<div>
 				<main>
 					<ThemeProvider theme={theme}>
 						<Routes>

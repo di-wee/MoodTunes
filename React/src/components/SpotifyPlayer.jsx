@@ -7,12 +7,70 @@ import {
 	Typography,
 	IconButton,
 	CircularProgress,
+	Box,
 } from '@mui/material';
-import { indigo } from '@mui/material/colors';
-import { FastForward, FastRewind, PlayArrow } from '@mui/icons-material';
+import { FastForward, FastRewind } from '@mui/icons-material';
 import { PauseBox, PlayBox } from 'mdi-material-ui';
 import Draggable from 'react-draggable';
+import { grey } from '@mui/material/colors';
 
+const SpotifyControls = ({
+	isPaused,
+	playSong,
+	pauseSong,
+	songId,
+	previousSong,
+	nextSong,
+}) => (
+	<Box sx={{ display: 'flex', alignItems: 'center' }}>
+		<IconButton
+			onClick={() => previousSong(songId)}
+			sx={{ mr: -1 }}
+			color='inherit'>
+			<FastRewind />
+		</IconButton>
+
+		<IconButton
+			onClick={() => (isPaused ? playSong() : pauseSong())}
+			sx={{ mx: -1 }}
+			color='inherit'>
+			{isPaused ? <PlayBox /> : <PauseBox />}
+		</IconButton>
+
+		<IconButton
+			onClick={() => nextSong(songId)}
+			sx={{ ml: -1 }}
+			color='inherit'>
+			<FastForward />
+		</IconButton>
+	</Box>
+);
+
+const TrackInfo = ({ track }) => (
+	<Box sx={{ display: 'flex', alignItems: 'center' }}>
+		<CardMedia
+			component='img'
+			sx={{
+				maxHeight: '3.5rem',
+				maxWidth: '4rem',
+				mr: 2,
+			}}
+			image={track.album?.images[0]?.url || 'defaultImageURL'}
+		/>
+		<Box>
+			<Typography
+				variant='subtitle1'
+				color='inherit'>
+				{track.name}
+			</Typography>
+			<Typography
+				variant='body2'
+				color='inherit'>
+				{track.artists[0]?.name || 'Unknown'}
+			</Typography>
+		</Box>
+	</Box>
+);
 function SpotifyPlayer(props) {
 	const userCtx = useContext(UserContext);
 	const { setDeviceId, isPaused, setPaused } = userCtx;
@@ -152,92 +210,23 @@ function SpotifyPlayer(props) {
 			<AppBar
 				position='absolute'
 				sx={{
-					right: '10px',
-					top: '10px',
-					backgroundColor: indigo[300],
+					right: 10,
+					top: 10,
+					bgcolor: grey[900],
 					width: '300px',
 					cursor: 'move',
 				}}>
-				<Toolbar
-					sx={{
-						justifyContent: 'center',
-						paddingLeft: '5%',
-						paddingRight: '5%',
-						width: '100%',
-					}}>
-					<div
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'space-between',
-							width: '100%',
-						}}>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-							}}>
-							{isLoading ? (
-								<CircularProgress sx={{ color: 'white' }} />
-							) : (
-								<>
-									{currentTrack.album && currentTrack.album.images[0] && (
-										<CardMedia
-											component='img'
-											sx={{
-												maxHeight: '4rem',
-												maxWidth: '4rem',
-												marginRight: '1rem',
-												padding: '0.5rem',
-											}}
-											image={currentTrack.album.images[0].url}
-										/>
-									)}
-									<div>
-										<Typography variant='subtitle1'>
-											{currentTrack.name}
-										</Typography>
-										{currentTrack.artists[0] && (
-											<Typography variant='body2'>
-												{currentTrack.artists[0].name}
-											</Typography>
-										)}
-									</div>
-								</>
-							)}
-						</div>
+				<Toolbar sx={{ justifyContent: 'space-between' }}>
+					{isLoading ? (
+						<CircularProgress sx={{ color: 'white' }} />
+					) : (
+						<TrackInfo track={currentTrack} />
+					)}
 
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-							}}>
-							<IconButton
-								style={{ marginRight: '-8px' }}
-								variant='contained'
-								color='secondary'
-								onClick={() => previousSong(songId)}>
-								<FastRewind />
-							</IconButton>
-
-							<IconButton
-								style={{ margin: '0 -8px' }}
-								variant='contained'
-								color='secondary'
-								onClick={() => (isPaused ? playSong() : pauseSong())}>
-								{isPaused ? <PlayBox /> : <PauseBox />}
-							</IconButton>
-
-							<IconButton
-								style={{ marginLeft: '-8px' }}
-								variant='contained'
-								color='secondary'
-								onClick={() => nextSong(songId)}>
-								<FastForward />
-							</IconButton>
-						</div>
-					</div>
+					<SpotifyControls
+						{...props}
+						isPaused={isPaused}
+					/>
 				</Toolbar>
 			</AppBar>
 		</Draggable>

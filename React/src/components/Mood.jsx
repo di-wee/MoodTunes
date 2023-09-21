@@ -1,17 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
 	Box,
+	Card,
 	CardMedia,
 	IconButton,
 	Pagination,
 	Typography,
 } from '@mui/material';
 
-import { blue, deepPurple, indigo } from '@mui/material/colors';
 import { AddCircle, PauseCircle, PlayCircle } from '@mui/icons-material';
+
 import SpotifyPlayerComponent from './SpotifyPlayer';
 import UserContext from '../context/UserContext';
 import AddToPlaylistModal from './AddToPlaylistModal';
+import { grey } from '@mui/material/colors';
+import { darken } from '@mui/material/styles';
+
+const spotifyGreen = '#1DB954';
+const spotifyGrey = '#191414'; // this is the dark blackish-grey background color commonly used by Spotify
+const spotifyText = '#FFFFFF';
+const spotifySubtitle = '#B3B3B3';
 
 const Mood = (props) => {
 	const [songs, setSongs] = useState([]);
@@ -170,131 +178,106 @@ const Mood = (props) => {
 	return (
 		<div
 			style={{
-				display: 'flex',
-				justifyContent: 'center',
-				height: '100%',
-				borderRadius: '5%',
-				margin: '2rem',
+				backgroundColor: spotifyGrey,
+				padding: '2rem 10%',
+				minHeight: '100vh',
 			}}>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					marginTop: '3rem',
-					alignItems: 'center',
-				}}>
-				<Box
-					sx={{
-						display: 'flex',
-						flexWrap: 'wrap',
-						minWidth: '40%',
-						width: '40%',
-						alignItems: 'center',
-						justifyContent: 'center',
-						height: '4rem',
-						backgroundColor: indigo[300],
-						borderRadius: '5%',
-					}}>
-					<Typography
-						variant='h6'
-						textAlign={'center'}
-						sx={{ color: blue[50] }}>
-						{mood.title} Songs:
-					</Typography>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						flexWrap: 'nowrap',
-						minWidth: 900,
-						width: '100%',
-						marginTop: '1rem',
-						padding: '1rem',
-						backgroundColor: deepPurple[200],
-						borderRadius: '8px',
-					}}>
-					{songs.slice(startIndex, endIndex).map((song, index) => (
-						<div
-							key={index}
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								marginBottom: '10px',
-								justifyContent: 'space-between',
-								backgroundColor: deepPurple[100], // inner pastel background
-								borderRadius: '8px', // Rounded corners
-								padding: '8px', // padding
-							}}>
-							<Box
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-									marginRight: '1rem',
+			<Typography
+				variant='h4'
+				textAlign={'center'}
+				sx={{ color: spotifyGreen, marginBottom: '2rem' }}>
+				{mood.title} Songs
+			</Typography>
+
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+				{songs.slice(startIndex, endIndex).map((song, index) => (
+					<Card
+						key={index}
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							padding: '1rem',
+							backgroundColor: grey[800],
+							borderRadius: '10px',
+							transition: 'transform 0.2s',
+							'&:hover': {
+								transform: 'scale(1.02)',
+								boxShadow: '2px 4px 15px rgba(0, 0, 0, 0.2)',
+							},
+						}}>
+						<CardMedia
+							component='img'
+							sx={{
+								height: '60px',
+								width: '60px',
+								borderRadius: '50%',
+								marginRight: '1rem',
+							}}
+							image={song.album_art}
+						/>
+						<Box sx={{ flexGrow: 1 }}>
+							<Typography style={{ color: spotifyText }}>
+								{song.name}
+							</Typography>
+							<Typography
+								variant='body2'
+								style={{ color: spotifySubtitle }}>
+								{song.artist}
+							</Typography>
+						</Box>
+						<Box sx={{ display: 'flex', gap: '0.5rem' }}>
+							<IconButton
+								sx={{ color: spotifyGreen }}
+								onClick={() => {
+									if (localIsPaused[song.id]) {
+										playSong(song.uri);
+									} else {
+										pauseSong();
+									}
+									setPauseState(song.id);
 								}}>
-								<CardMedia
-									component='img'
-									sx={{
-										maxHeight: '4rem',
-										maxWidth: '4rem',
-										marginRight: '1rem',
-										padding: '0.5rem',
-									}}
-									image={song.album_art}
-								/>
-								<Box sx={{ marginRight: '1rem' }}>
-									<Typography style={{ color: '#3D405B' }}>
-										Song: {song.name}
-									</Typography>
-									<Typography style={{ color: '#3D405B' }}>
-										Artist: {song.artist}
-									</Typography>
-								</Box>
-							</Box>
-							<Box>
-								<IconButton
-									style={{ margin: '0 -8px' }}
-									variant='contained'
-									color='primary'
-									onClick={() => {
-										if (localIsPaused[song.id]) {
-											playSong(song.uri);
-										} else {
-											pauseSong();
-										}
-										setPauseState(song.id);
-									}}>
-									{localIsPaused[song.id] ? <PlayCircle /> : <PauseCircle />}
-								</IconButton>
-								<AddCircle
-									sx={{ cursor: 'pointer' }}
-									onClick={() => handleAddToPlaylistClick(song.id)}
-									color='primary'></AddCircle>
-							</Box>
-						</div>
-					))}
-				</Box>
-				<Pagination
-					sx={{
-						marginTop: '2rem',
-						backgroundColor: indigo[200], // pastel yellow for pagination
-						borderRadius: '8px', // Rounded corners
-					}}
-					color='primary'
-					count={totalPages}
-					page={page}
-					onChange={handlePageChange}></Pagination>
+								{localIsPaused[song.id] ? <PlayCircle /> : <PauseCircle />}
+							</IconButton>
+							<IconButton
+								sx={{ color: spotifyGreen }}
+								onClick={() => handleAddToPlaylistClick(song.id)}>
+								<AddCircle />
+							</IconButton>
+						</Box>
+					</Card>
+				))}
 			</Box>
+
+			<Pagination
+				sx={{
+					marginTop: '2rem',
+					display: 'flex',
+					justifyContent: 'center',
+					'& button': {
+						backgroundColor: spotifyGreen,
+						color: spotifyText,
+					},
+					'& button:hover': {
+						backgroundColor: darken(spotifyGreen, 0.1),
+					},
+				}}
+				count={totalPages}
+				page={page}
+				onChange={handlePageChange}
+			/>
+
 			{token && (
 				<SpotifyPlayerComponent
 					playSong={playSong}
 					pauseSong={pauseSong}
-					token={token}></SpotifyPlayerComponent>
+					token={token}
+				/>
 			)}
 			{showModal && token && (
 				<AddToPlaylistModal
 					setShowModal={setShowModal}
-					showModal={showModal}></AddToPlaylistModal>
+					showModal={showModal}
+				/>
 			)}
 		</div>
 	);

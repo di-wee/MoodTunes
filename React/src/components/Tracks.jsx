@@ -14,8 +14,11 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
-import { deepPurple, indigo, lightBlue } from '@mui/material/colors';
 import SpotifyPlayer from './SpotifyPlayer';
+
+const spotifyGreen = '#1DB954';
+const spotifyBlack = '#191414';
+const spotifyGray = '#B3B3B3';
 
 const Tracks = (props) => {
 	const { playlist } = props;
@@ -296,30 +299,19 @@ const Tracks = (props) => {
 	}, [playlist.id]);
 
 	return (
-		<div>
+		<div
+			style={{
+				backgroundColor: spotifyBlack,
+				color: spotifyGray,
+				padding: '2rem',
+				minHeight: '100vh',
+			}}>
 			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					marginTop: '3rem',
-					alignItems: 'center',
-				}}>
-				<Box
-					sx={{
-						display: 'flex',
-						flexWrap: 'wrap',
-
-						width: '30%',
-						alignItems: 'center',
-						justifyContent: 'center',
-						height: '4rem',
-						backgroundColor: lightBlue[50],
-						borderRadius: '30px',
-					}}>
+				sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				<Box sx={{ width: '100%', textAlign: 'center', marginBottom: '2rem' }}>
 					<Typography
-						variant='h6'
-						textAlign={'center'}
-						sx={{ color: lightBlue[900] }}>
+						variant='h4'
+						style={{ color: spotifyGreen }}>
 						{playlist.name}
 					</Typography>
 				</Box>
@@ -334,42 +326,31 @@ const Tracks = (props) => {
 					onClick={handlePlaylistClick}
 					variant='contained'
 					sx={{
-						display: 'relative',
-						backgroundColor: indigo[300],
-						minWidth: '10rem',
-						padding: '5px 10px',
-						marginTop: '1rem',
+						backgroundColor: spotifyGreen,
+						color: spotifyBlack,
+						borderRadius: '25px',
+						padding: '10px 30px',
 					}}>
 					{isPlaylistPaused || isPlaylistPaused == null
 						? 'Play Playlist'
 						: 'Stop Playlist'}
 				</Button>
 
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						flexWrap: 'nowrap',
-						minWidth: 600,
-						width: '80%',
-						marginTop: '1rem',
-						padding: '1rem',
-						backgroundColor: deepPurple[200],
-						borderRadius: '8px',
-					}}>
+				<Box sx={{ width: '80%', marginTop: '2rem' }}>
 					{songs.length > 0 ? (
-						<>
-							{songs.slice(startIndex, endIndex).map((song, index) => (
-								<div
-									key={index}
-									style={{
+						songs.slice(startIndex, endIndex).map((song, index) => (
+							<div
+								key={index}
+								style={{
+									marginBottom: '1rem',
+									borderBottom: '1px solid',
+									borderColor: spotifyGray,
+								}}>
+								<Box
+									sx={{
 										display: 'flex',
 										alignItems: 'center',
-										marginBottom: '10px',
 										justifyContent: 'space-between',
-										backgroundColor: deepPurple[100], // inner pastel background
-										borderRadius: '8px', // Rounded corners
-										padding: '8px', // padding
 									}}>
 									<Box
 										sx={{
@@ -380,28 +361,25 @@ const Tracks = (props) => {
 										<CardMedia
 											component='img'
 											sx={{
-												maxHeight: '4rem',
-												maxWidth: '4rem',
+												height: '4rem',
+												width: '4rem',
 												marginRight: '1rem',
-												padding: '0.5rem',
 											}}
 											image={song.album_art}
 										/>
 
-										<Box sx={{ marginRight: '1rem' }}>
-											<Typography>Song: {song.name}</Typography>
+										<Box>
+											<Typography style={{ color: spotifyGreen }}>
+												Song: {song.name}
+											</Typography>
 											<Typography>Artist: {song.artist}</Typography>
 										</Box>
 									</Box>
 
 									<Box>
 										<IconButton
-											style={{ margin: '0 -8px' }}
-											variant='contained'
 											color='primary'
-											onClick={() => {
-												onClickButton(song.id, song.uri);
-											}}>
+											onClick={() => onClickButton(song.id, song.uri)}>
 											{localIsPaused[song.id] ? (
 												<PlayCircle />
 											) : (
@@ -411,21 +389,18 @@ const Tracks = (props) => {
 										<IconButton
 											color='primary'
 											onClick={() => deleteSongFromPlaylist(song.id)}>
-											<Delete></Delete>
+											<Delete />
 										</IconButton>
 									</Box>
-								</div>
-							))}
-						</>
+								</Box>
+							</div>
+						))
 					) : (
-						<>
-							<Typography>No songs available</Typography>
-						</>
+						<Typography>No songs available</Typography>
 					)}
 				</Box>
 				<Pagination
-					sx={{ marginTop: '2rem' }}
-					color='primary'
+					sx={{ marginTop: '2rem', color: spotifyGreen }}
 					count={totalPages}
 					page={page}
 					onChange={handlePageChange}></Pagination>
@@ -436,7 +411,8 @@ const Tracks = (props) => {
 				playSong={playSong}
 				nextSong={nextSong}
 				previousSong={previousSong}
-				songId={songId}></SpotifyPlayer>
+				songId={songId}
+			/>
 		</div>
 	);
 };

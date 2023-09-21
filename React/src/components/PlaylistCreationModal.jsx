@@ -7,7 +7,6 @@ import {
 	Input,
 	InputLabel,
 } from '@mui/material';
-import { blue } from '@mui/material/colors';
 import React, { useState } from 'react';
 
 const PlaylistCreationModal = (props) => {
@@ -83,31 +82,48 @@ const PlaylistCreationModal = (props) => {
 				onClose={handleClose}>
 				<Box
 					component='form'
-					sx={style}
+					sx={{
+						top: '50%',
+						left: '50%',
+						width: 400,
+						boxShadow: 24,
+						p: 4,
+						backgroundColor: '#181818',
+						color: 'white',
+					}}
 					display='flex'
 					alignItems='center'>
 					<FormControl
 						variant='standard'
 						mr={2}>
-						<InputLabel htmlFor='component-simple'>Playlist Name</InputLabel>
+						<InputLabel
+							htmlFor='component-simple'
+							style={{ color: '#1DB954' }}>
+							Playlist Name
+						</InputLabel>
 						<Input
 							fullWidth
 							onChange={onChange}
+							style={{ color: 'white', borderBottom: '1px solid #1DB954' }}
 						/>
 					</FormControl>
 					<Button
 						disabled={loading}
 						onClick={onSubmit}
 						variant='contained'
-						sx={{ backgroundColor: blue[800], marginLeft: '3rem' }}>
-						{loading ? 'Creating...' : 'Submit'}
+						sx={{
+							backgroundColor: loading ? '#535353' : '#1DB954',
+							marginLeft: '3rem',
+						}}>
+						{loading ? (
+							<CircularProgress
+								size={24}
+								color='inherit'
+							/>
+						) : (
+							'Submit'
+						)}
 					</Button>
-					{loading && (
-						<CircularProgress
-							sx={{ marginLeft: '1rem' }}
-							size={24}
-						/>
-					)}
 				</Box>
 			</Dialog>
 		</div>

@@ -22,18 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-ba$!nl3un$#+5bio6xftn^rrq_be(c9@)0_)kb5g7p+k=b82_u'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = True
 
-ALLOWED_HOSTS = ["moodtunes.onrender.com"]
+ALLOWED_HOSTS = ["moodtunes.onrender.com", 'localhost']
 
 # Application definition
 
 
-SPOTIPY_CLIENT_ID = os.environ.get('SPOTIPY_CLIENT_ID')
-SPOTIPY_CLIENT_SECRET = os.environ.get('SPOTIPY_CLIENT_SECRET')
-SPOTIPY_REDIRECT_URI = os.environ.get('SPOTIPY_REDIRECT_URI')
+SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
+SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
+SPOTIPY_REDIRECT_URI = 'http://localhost:8001/'
 
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
@@ -205,5 +205,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'https://moodtunes.netlify.app/user/dashboard'
-LOGOUT_REDIRECT_URL = 'https://moodtunes.netlify.app/'
+LOGIN_REDIRECT_URL = 'http://localhost:5173/user/dashboard'
+LOGOUT_REDIRECT_URL = 'http://localhost:5173/'

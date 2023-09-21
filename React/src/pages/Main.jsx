@@ -10,14 +10,20 @@ import {
 	createTheme,
 } from '@mui/material';
 import '@fontsource/roboto-condensed';
-import { blue, lightBlue } from '@mui/material/colors';
 import { Link } from 'react-router-dom';
 import { LoginOutlined } from '@mui/icons-material';
+
+const spotifyGreen = '#1DB954';
+const spotifyGrey = '#B3B3B3';
+const navbarColor = '#333'; // Slightly lighter than Spotify's black for contrast
 
 const theme = createTheme({
 	palette: {
 		primary: {
-			main: blue[50],
+			main: navbarColor,
+		},
+		secondary: {
+			main: spotifyGreen,
 		},
 	},
 	typography: {
@@ -30,62 +36,49 @@ const Main = () => {
 		<div>
 			<ThemeProvider theme={theme}>
 				<header>
-					<Box
-						sx={{
-							flexGrow: 1,
-							display: 'flex',
-							alignContent: 'center',
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}>
-						<AppBar position='static'>
-							<Toolbar
-								sx={{ display: 'flex', justifyContent: 'space-between' }}>
-								<div style={{ flex: 1 }}></div>{' '}
-								{/* Left Spacer to ensure balance */}
-								<div style={{ flex: 2, textAlign: 'center' }}>
-									<Typography
-										variant='h6'
-										component='div'
-										sx={{ color: lightBlue[800] }}>
-										<Link
-											to='/'
-											style={{ textDecoration: 'none', color: 'inherit' }}>
-											MOOD TUNES
-										</Link>
+					<AppBar
+						position='static'
+						color='primary'>
+						<Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+							{/* This empty Box will serve as a spacer */}
+							<Box flex={1}></Box>
+
+							{/* Centered "MOOD TUNES" */}
+							<Box
+								flex={2}
+								textAlign='center'>
+								<Typography variant='h6'>
+									<Link
+										to='/'
+										style={{ textDecoration: 'none', color: spotifyGreen }}>
+										MOOD TUNES
+									</Link>
+								</Typography>
+							</Box>
+
+							{/* Right-aligned "admin login" button */}
+							<Box
+								flex={1}
+								display='flex'
+								justifyContent='flex-end'>
+								<Button
+									variant='text'
+									startIcon={<LoginOutlined />}
+									sx={{ color: spotifyGrey }}>
+									<Typography variant='button'>
+										<a
+											href='https://moodtunes.onrender.com/admin'
+											style={{ textDecoration: 'none', color: spotifyGrey }}>
+											admin login
+										</a>
 									</Typography>
-								</div>
-								<div
-									style={{
-										flex: 1,
-										display: 'flex',
-										justifyContent: 'flex-end',
-									}}>
-									<Button
-										color='inherit'
-										startIcon={<LoginOutlined />}>
-										<Typography
-											variant='h8'
-											component='div'
-											sx={{ color: lightBlue[800] }}>
-											<a
-												href='https://moodtunes.onrender.com/admin'
-												style={{
-													textDecoration: 'none',
-													color: 'inherit',
-													fontFamily: 'Roboto Condensed',
-												}}>
-												admin login
-											</a>
-										</Typography>
-									</Button>
-								</div>
-							</Toolbar>
-						</AppBar>
-					</Box>
+								</Button>
+							</Box>
+						</Toolbar>
+					</AppBar>
 				</header>
 			</ThemeProvider>
-			<Login></Login>
+			<Login />
 		</div>
 	);
 };
