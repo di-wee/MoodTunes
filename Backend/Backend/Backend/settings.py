@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ["moodtunes.onrender.com", 'localhost']
 # Application definition
 
 
-SPOTIPY_CLIENT_ID = '9586b49be80f489bb5c32e5614822cd1'
-SPOTIPY_CLIENT_SECRET = 'b29cf1e359c940f3aebd47792d251d55'
+SPOTIPY_CLIENT_ID = os.environ.get('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = os.environ.get('SPOTIPY_CLIENT_SECRET')
 SPOTIPY_REDIRECT_URI = 'http://localhost:8001/'
 
 SITE_ID = 1
@@ -205,5 +205,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/user/dashboard'
-LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
+LOGIN_REDIRECT_URL = 'https://moodtunes.netlify.app/user/dashboard'
+LOGOUT_REDIRECT_URL = 'https://moodtunes.netlify.app/'
