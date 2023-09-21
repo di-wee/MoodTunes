@@ -159,19 +159,22 @@ python manage.py runserver
 ## Screenshots
 
 ### Login page:
-<img width="1460" alt="Screenshot 2023-09-14 at 10 05 21 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/3cfa0195-339d-4556-b87b-59f0fd8ec3d8">
+![Screenshot 2023-09-21 at 11 41 03 AM](https://github.com/di-wee/MoodTunes/assets/135717295/00ada9e1-c5e7-458d-9b95-0a65cedcc12e)
 
 
 ### User Dashboard:
-<img width="1425" alt="Screenshot 2023-09-14 at 10 06 44 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/83cfc306-a3d7-440f-96df-4693f14fff79">
+![Screenshot 2023-09-21 at 11 41 21 AM](https://github.com/di-wee/MoodTunes/assets/135717295/609d359f-d03e-433e-8276-1199057fc236)
+
 
 
 ### Inside a Mood:
-<img width="1462" alt="Screenshot 2023-09-14 at 10 06 56 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/1e58b43d-a89a-4078-ac13-0bea1675e417">
+![Screenshot 2023-09-21 at 11 41 37 AM](https://github.com/di-wee/MoodTunes/assets/135717295/5dceb14b-0627-4fc2-a649-aa111de82619)
+
 
 
 ### User Playlist:
-<img width="1462" alt="Screenshot 2023-09-14 at 10 07 10 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/1aa6d21e-9eae-4384-af94-a6d90664d798">
+![Screenshot 2023-09-21 at 11 42 41 AM](https://github.com/di-wee/MoodTunes/assets/135717295/e811922b-7b50-4afb-af26-d20f980c75fa)
+
 
 ### Admin Login:
 <img width="1454" alt="Screenshot 2023-09-14 at 10 07 52 PM" src="https://github.com/di-wee/MoodTunes/assets/135717295/2bac4835-bf85-4db0-9917-57952210cfde">
